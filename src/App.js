@@ -4,13 +4,6 @@ import List from './List';
 import Task from './Task';
 import axios from './api.js';
 
-const renderTasks = (tasks) =>
-  tasks.map(({ id, text, isChecked }) => (
-    <li key={id}>
-      <Task text={text} isChecked={isChecked} />
-    </li>
-  ));
-
 const App = () => {
   const [tasks, setTasks] = useState([]);
 
@@ -46,12 +39,25 @@ const App = () => {
 
   const deleteData = (id) =>
     axios
-      .put(`${id}`)
+      .delete(`${id}`)
       .then(() => readData())
       .catch((error) => {
         console.dir(error);
         return error;
       });
+
+  const renderTasks = () =>
+    tasks.map(({ id, text, isChecked }) => (
+      <li key={id}>
+        <Task
+          text={text}
+          isChecked={isChecked}
+          updateData={updateData}
+          deleteData={deleteData}
+          id={id}
+        />
+      </li>
+    ));
 
   useEffect(() => {
     readData();
@@ -59,7 +65,7 @@ const App = () => {
 
   return (
     <div>
-      <Form />
+      <Form createData={createData} />
       <List>{renderTasks(tasks)}</List>
     </div>
   );

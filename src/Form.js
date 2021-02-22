@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const Form = () => {
+const Form = ({ createData }) => {
   const [value, setValue] = useState('');
 
   const handleChange = (e) => {
@@ -11,6 +11,13 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    createData({
+      text: value,
+      isChecked: false,
+    }).then(() => {
+      setValue('');
+    });
   };
 
   return (
