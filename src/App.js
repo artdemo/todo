@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
 import Form from './Form';
 import List from './List';
 import Task from './Task';
@@ -64,10 +66,12 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <Form createData={createData} />
-      <List>{renderTasks(tasks)}</List>
-    </div>
+    <Container maxWidth="sm">
+      <Paper elevation={3} style={{ padding: '10px' }}>
+        <Form createData={createData} />
+        <List>{renderTasks(tasks)}</List>
+      </Paper>
+    </Container>
   );
 };
 
