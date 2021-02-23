@@ -16,14 +16,16 @@ const App = () => {
       .get()
       .then((response) => {
         setTasks(response.data);
+
+        if (isLoading) {
+          setLoading(false);
+        }
+
         return response;
       })
       .catch((error) => {
         console.dir(error);
         return error;
-      })
-      .then(() => {
-        setLoading(false);
       });
 
   const createData = (data) =>
