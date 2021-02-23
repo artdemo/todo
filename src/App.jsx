@@ -5,28 +5,25 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Form from './Form';
 import List from './List';
 import Task from './Task';
-import axios from './api.js';
+import axios from './api';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const classes = useState();
 
   const readData = () =>
     axios
       .get()
       .then((response) => {
         setTasks(response.data);
-
-        if (isLoading) {
-          setLoading(false);
-        }
-
         return response;
       })
       .catch((error) => {
         console.dir(error);
         return error;
+      })
+      .then(() => {
+        setLoading(false);
       });
 
   const createData = (data) =>

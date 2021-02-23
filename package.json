@@ -24,8 +24,14 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "react-app/jest",
+      "airbnb"
+    ],
+    "rules": {
+      "react/prop-types": 0,
+      "implicit-arrow-linebreak": 0,
+      "object-curly-newline": 0
+    }
   },
   "browserslist": {
     "production": [
@@ -40,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-airbnb": "^18.2.1",
     "json-server": "^0.16.3"
   }
 }
