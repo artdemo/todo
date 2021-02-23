@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
@@ -15,50 +16,75 @@ const useStyles = makeStyles({
 });
 
 const Task = ({ id, text, isChecked, updateData, deleteData }) => {
-  const [taskData, setTaskData] = useState({ text, isChecked });
+  const [taskText, setValue] = useState(text);
+  const [isLoading, setLoading] = useState(false);
   const classes = useStyles();
 
   const handleCheckChange = (e) => {
-    setTaskData({ ...taskData, isChecked: e.currentTarget.checked });
+    setLoading(true);
 
-    updateData(id, { ...taskData, isChecked: e.currentTarget.checked });
+    updateData(id, { text: taskText, isChecked: e.currentTarget.checked }).then(
+      () => {
+        setLoading(false);
+      },
+    );
   };
 
   const handleTextChange = (e) => {
-    setTaskData({ ...taskData, text: e.currentTarget.value });
+    setValue(e.currentTarget.value);
   };
 
   const handleClick = () => {
-    deleteData(id);
+    setLoading(true);
+
+    deleteData(id).then(() => {
+      setLoading(false);
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    updateData(id, taskData);
+    setLoading(true);
+
+    updateData(id, { text: taskText, isChecked }).then((response) => {
+      if (response.isAxiosError) {
+        setValue(text);
+      }
+
+      setLoading(false);
+    });
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <Grid container alignItems="center" spacing={2}>
-        <Grid item>
-          <Checkbox onChange={handleCheckChange} checked={taskData.isChecked} />
-        </Grid>
-        <Grid item style={{ flexGrow: 1 }}>
-          <TextField
-            onChange={handleTextChange}
-            value={taskData.text}
-            fullWidth
-            InputProps={{
-              className: classes.field,
-            }}
-          />
-        </Grid>
-        <Grid item>
-          <IconButton color="secondary" onClick={handleClick}>
-            <ClearIcon />
-          </IconButton>
-        </Grid>
+        {isLoading ? (
+          <Grid item>
+            <CircularProgress color="secondary" />
+          </Grid>
+        ) : (
+          <>
+            <Grid item>
+              <Checkbox onChange={handleCheckChange} checked={isChecked} />
+            </Grid>
+            <Grid item style={{ flexGrow: 1 }}>
+              <TextField
+                onChange={handleTextChange}
+                value={taskText}
+                fullWidth
+                InputProps={{
+                  className: classes.field,
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <IconButton color="secondary" onClick={handleClick}>
+                <ClearIcon />
+              </IconButton>
+            </Grid>
+          </>
+        )}
       </Grid>
     </form>
   );

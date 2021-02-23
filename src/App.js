@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Form from './Form';
 import List from './List';
 import Task from './Task';
@@ -8,12 +9,19 @@ import axios from './api.js';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const classes = useState();
 
   const readData = () =>
     axios
       .get()
       .then((response) => {
         setTasks(response.data);
+
+        if (isLoading) {
+          setLoading(false);
+        }
+
         return response;
       })
       .catch((error) => {
@@ -64,6 +72,21 @@ const App = () => {
   useEffect(() => {
     readData();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        <CircularProgress color="secondary" size={80} />
+      </div>
+    );
+  }
 
   return (
     <Container maxWidth="sm">
