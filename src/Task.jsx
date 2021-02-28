@@ -16,28 +16,34 @@ const useStyles = makeStyles({
 });
 
 const Task = ({ id, text, isChecked, updateData, deleteData }) => {
-  const [taskText, setValue] = useState(text);
+  const [taskData, setData] = useState({ text, isChecked });
   const [isLoading, setLoading] = useState(false);
   const classes = useStyles();
 
   const handleCheckChange = (e) => {
-    setLoading(true);
+    setData({ ...taskData, isChecked: e.currentTarget.checked });
 
-    updateData(id, { text: taskText, isChecked: e.currentTarget.checked }).then(
-      () => {
-        setLoading(false);
+    updateData(id, { ...taskData, isChecked: e.currentTarget.checked }).then(
+      (error) => {
+        if (error && error.isAxiosError) {
+          setData({ text, isChecked });
+        }
       },
     );
   };
 
   const handleTextChange = (e) => {
-    setValue(e.currentTarget.value);
+    setData({ ...taskData, text: e.currentTarget.value });
   };
 
   const handleClick = () => {
     setLoading(true);
 
-    deleteData(id).then(() => {
+    deleteData(id).then((error) => {
+      if (error && error.isAxiosError) {
+        setData({ text, isChecked });
+      }
+
       setLoading(false);
     });
   };
@@ -45,46 +51,42 @@ const Task = ({ id, text, isChecked, updateData, deleteData }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setLoading(true);
-
-    updateData(id, { text: taskText, isChecked }).then((response) => {
-      if (response.isAxiosError) {
-        setValue(text);
+    updateData(id, taskData).then((error) => {
+      if (error && error.isAxiosError) {
+        setData({ text, isChecked });
       }
-
-      setLoading(false);
     });
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <Grid container alignItems="center" spacing={2}>
-        {isLoading ? (
-          <Grid item>
+        <Grid item>
+          <Checkbox
+            onChange={handleCheckChange}
+            checked={taskData.isChecked}
+            style={{ padding: '12px' }}
+          />
+        </Grid>
+        <Grid item style={{ flexGrow: 1 }}>
+          <TextField
+            onChange={handleTextChange}
+            value={taskData.text}
+            fullWidth
+            InputProps={{
+              className: classes.field,
+            }}
+          />
+        </Grid>
+        <Grid item>
+          {isLoading ? (
             <CircularProgress color="secondary" />
-          </Grid>
-        ) : (
-          <>
-            <Grid item>
-              <Checkbox onChange={handleCheckChange} checked={isChecked} />
-            </Grid>
-            <Grid item style={{ flexGrow: 1 }}>
-              <TextField
-                onChange={handleTextChange}
-                value={taskText}
-                fullWidth
-                InputProps={{
-                  className: classes.field,
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <IconButton color="secondary" onClick={handleClick}>
-                <ClearIcon />
-              </IconButton>
-            </Grid>
-          </>
-        )}
+          ) : (
+            <IconButton color="secondary" onClick={handleClick}>
+              <ClearIcon />
+            </IconButton>
+          )}
+        </Grid>
       </Grid>
     </form>
   );

@@ -25,7 +25,7 @@ const Form = ({ createData }) => {
     }).then((response) => {
       setLoading(false);
 
-      if (!response.isAxiosError) {
+      if (response === undefined || !response.isAxiosError) {
         setValue('');
       }
     });
