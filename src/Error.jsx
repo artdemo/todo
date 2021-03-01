@@ -5,9 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Error = ({ errorState, setError }) => {
-  const styles = {
+const useStyles = makeStyles({
+  wrapper: {
     position: 'fixed',
     left: 0,
     right: 0,
@@ -15,8 +16,27 @@ const Error = ({ errorState, setError }) => {
     bottom: 0,
     backgroundColor: 'rgba(128, 128, 128, 0.5)',
     zIndex: 1000,
-    visibility: errorState.isError ? 'visible' : 'hidden',
-  };
+    visibility: (isError) => (isError ? 'visible' : 'hidden'),
+  },
+
+  item: {
+    width: '50%',
+  },
+
+  popup: {
+    padding: '50px',
+    position: 'relative',
+  },
+
+  button: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+});
+
+const Error = ({ errorState, setError }) => {
+  const classes = useStyles(errorState.isError);
 
   const handleEsc = (e) => {
     if (e.keyCode === 27) {
@@ -48,23 +68,15 @@ const Error = ({ errorState, setError }) => {
       container
       alignItems="center"
       justify="center"
-      style={styles}
+      className={classes.wrapper}
       onClick={handleClick}
     >
-      <Grid item style={{ width: '50%' }}>
-        <Paper
-          id="error-paper"
-          square
-          style={{ padding: '50px', position: 'relative' }}
-        >
+      <Grid item className={classes.item}>
+        <Paper id="error-paper" square className={classes.popup}>
           <IconButton
             id="error-button"
             color="secondary"
-            style={{
-              position: 'absolute',
-              right: 0,
-              top: 0,
-            }}
+            className={classes.button}
           >
             <ClearIcon />
           </IconButton>

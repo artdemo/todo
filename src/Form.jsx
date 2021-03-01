@@ -3,8 +3,25 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  form: {
+    marginBotton: '12px',
+  },
+  progress: {
+    display: 'block',
+    margin: 'auto',
+  },
+  button: {
+    color: 'green',
+    height: '100%',
+  },
+});
 
 const Form = ({ createData }) => {
+  const classes = useStyles();
+
   const [value, setValue] = useState('');
   const [isLoading, setLoading] = useState(false);
 
@@ -32,7 +49,7 @@ const Form = ({ createData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '12px' }}>
+    <form onSubmit={handleSubmit} className={classes.form}>
       <Grid container spacing={2}>
         <Grid item xs={9}>
           <TextField
@@ -48,16 +65,13 @@ const Form = ({ createData }) => {
         </Grid>
         <Grid item xs={3}>
           {isLoading ? (
-            <CircularProgress
-              color="secondary"
-              style={{ display: 'block', margin: 'auto' }}
-            />
+            <CircularProgress color="secondary" className={classes.progress} />
           ) : (
             <Button
               type="submit"
               variant="outlined"
               fullWidth
-              style={{ color: 'green', height: '100%' }}
+              className={classes.button}
               color="inherit"
             >
               Add

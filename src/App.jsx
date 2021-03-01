@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 import Form from './Form';
 import List from './List';
 import Task from './Task';
@@ -15,7 +16,22 @@ const errorMessages = {
   delete: "We can't delete your task now. Please try again later",
 };
 
+const useStyles = makeStyles({
+  progress: {
+    position: 'fixed',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
+
+  paper: {
+    padding: '10px',
+  },
+});
+
 const App = () => {
+  const classes = useStyles();
+
   const [tasks, setTasks] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [errorState, setError] = useState({ isError: false, errorMsg: '' });
@@ -89,14 +105,7 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          position: 'fixed',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
+      <div className={classes.progress}>
         <CircularProgress color="secondary" size={80} />
       </div>
     );
@@ -105,7 +114,7 @@ const App = () => {
   return (
     <>
       <Container maxWidth="sm">
-        <Paper elevation={3} style={{ padding: '10px' }}>
+        <Paper elevation={3} className={classes.paper}>
           <Form createData={createData} />
           <List>{renderTasks(tasks)}</List>
         </Paper>

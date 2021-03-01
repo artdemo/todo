@@ -8,6 +8,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
+  item: {
+    flexGrow: 1,
+  },
+
+  checkbox: {
+    padding: '12px',
+  },
+
   field: {
     '&::before': {
       borderBottomColor: 'transparent',
@@ -16,9 +24,10 @@ const useStyles = makeStyles({
 });
 
 const Task = ({ id, text, isChecked, updateData, deleteData }) => {
+  const classes = useStyles();
+
   const [taskData, setData] = useState({ text, isChecked });
   const [isLoading, setLoading] = useState(false);
-  const classes = useStyles();
 
   const handleCheckChange = (e) => {
     setData({ ...taskData, isChecked: e.currentTarget.checked });
@@ -65,10 +74,10 @@ const Task = ({ id, text, isChecked, updateData, deleteData }) => {
           <Checkbox
             onChange={handleCheckChange}
             checked={taskData.isChecked}
-            style={{ padding: '12px' }}
+            className={classes.checkbox}
           />
         </Grid>
-        <Grid item style={{ flexGrow: 1 }}>
+        <Grid item className={classes.item}>
           <TextField
             onChange={handleTextChange}
             value={taskData.text}
