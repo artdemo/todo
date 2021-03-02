@@ -24,3 +24,8 @@
   </ul>
 </ul>
 <img src="mock.jpg" alt="mock">
+<h2>P.S.</h2>
+<ul>
+  <li>Для <a href="https://artdemo.github.io/frameworkteam/build/">размещения на GitHub Pages</a> в репозиторий добавлен build и модуль fakeAxios, иммитирующий запросы на сервер.</li>
+  <li>Для работы с json-server необходимо разкомментировать импорт axios в api.js.</li>
+</ul>
