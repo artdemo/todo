@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Form from './Form';
 import List from './List';
 import Task from './Task';
-import axios from './api';
+import axios from '../utils/api';
 
 const useStyles = makeStyles({
   progress: {
