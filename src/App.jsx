@@ -6,15 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Form from './Form';
 import List from './List';
 import Task from './Task';
-import Error from './Error';
 import axios from './api';
-
-const errorMessages = {
-  read:
-    'It seems you are offline or something went wrong during request. Please reload the page.',
-  create: 'Something went wrong during request. Please try again.',
-  delete: "We can't delete your task now. Please try again later",
-};
 
 const useStyles = makeStyles({
   progress: {
@@ -34,7 +26,6 @@ const App = () => {
 
   const [tasks, setTasks] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [errorState, setError] = useState({ isError: false, errorMsg: '' });
 
   const readData = () =>
     axios
@@ -48,10 +39,6 @@ const App = () => {
       .catch((error) => {
         console.dir(error);
         setLoading(false);
-        setError({
-          isError: true,
-          errorMsg: errorMessages.read,
-        });
       });
 
   const createData = (data) =>
@@ -62,14 +49,12 @@ const App = () => {
       })
       .catch((error) => {
         console.dir(error);
-        setError({ isError: true, errorMsg: errorMessages.create });
         return error;
       });
 
   const updateData = (id, data) =>
     axios.put(`${id}`, data).catch((error) => {
       console.dir(error);
-      setError({ isError: true, errorMsg: errorMessages.create });
       return error;
     });
 
@@ -82,7 +67,6 @@ const App = () => {
       })
       .catch((error) => {
         console.dir(error);
-        setError({ isError: true, errorMsg: errorMessages.delete });
         return error;
       });
 
@@ -119,7 +103,6 @@ const App = () => {
           <List>{renderTasks(tasks)}</List>
         </Paper>
       </Container>
-      <Error errorState={errorState} setError={setError} />
     </>
   );
 };
