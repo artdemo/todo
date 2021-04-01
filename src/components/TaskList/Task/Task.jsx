@@ -1,27 +1,11 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-
-const useStyles = makeStyles({
-  item: {
-    flexGrow: 1,
-  },
-
-  checkbox: {
-    padding: '12px',
-  },
-
-  field: {
-    '&::before': {
-      borderBottomColor: 'transparent',
-    },
-  },
-});
+import useStyles from './style';
 
 const Task = ({ id, text, isChecked, updateData, deleteData }) => {
   const classes = useStyles();
@@ -68,7 +52,7 @@ const Task = ({ id, text, isChecked, updateData, deleteData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={classes.form}>
       <Grid container alignItems="center" spacing={2}>
         <Grid item>
           <Checkbox

@@ -2,24 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import Form from './Form';
-import List from './List';
-import Task from './Task';
-import axios from '../utils/api';
-
-const useStyles = makeStyles({
-  progress: {
-    position: 'fixed',
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
-
-  paper: {
-    padding: '10px',
-  },
-});
+import Form from '../Form';
+import TaskList from '../TaskList';
+import useStyles from './style';
+import { getAllTasks, postNewTask, putTask, deleteTask } from '../../utils/api';
 
 const App = () => {
   const classes = useStyles();
@@ -28,60 +14,41 @@ const App = () => {
   const [isLoading, setLoading] = useState(true);
 
   const readData = () =>
-    axios
-      .get()
+    getAllTasks()
       .then((response) => {
         setTasks(response.data);
+
         if (isLoading) {
           setLoading(false);
         }
       })
       .catch((error) => {
-        console.dir(error);
         setLoading(false);
       });
 
   const createData = (data) =>
-    axios
-      .post('', data)
+    postNewTask(data)
       .then((response) => {
         setTasks([...tasks, response.data]);
       })
       .catch((error) => {
-        console.dir(error);
         return error;
       });
 
   const updateData = (id, data) =>
-    axios.put(`${id}`, data).catch((error) => {
-      console.dir(error);
+    putTask(id, data).catch((error) => {
       return error;
     });
 
   const deleteData = (id) =>
-    axios
-      .delete(`${id}`)
+    deleteTask(id)
       .then(() => {
         const newTasks = tasks.filter((task) => task.id !== id);
         setTasks(newTasks);
       })
       .catch((error) => {
-        console.dir(error);
         return error;
       });
-
-  const renderTasks = () =>
-    tasks.map(({ id, text, isChecked }) => (
-      <li key={id}>
-        <Task
-          text={text}
-          isChecked={isChecked}
-          updateData={updateData}
-          deleteData={deleteData}
-          id={id}
-        />
-      </li>
-    ));
 
   useEffect(() => {
     readData();
@@ -100,7 +67,11 @@ const App = () => {
       <Container maxWidth="sm">
         <Paper elevation={3} className={classes.paper}>
           <Form createData={createData} />
-          <List>{renderTasks(tasks)}</List>
+          <TaskList
+            tasks={tasks}
+            updateData={updateData}
+            deleteData={deleteData}
+          />
         </Paper>
       </Container>
     </>

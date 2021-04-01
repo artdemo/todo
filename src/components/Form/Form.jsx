@@ -3,21 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  form: {
-    marginBotton: '12px',
-  },
-  progress: {
-    display: 'block',
-    margin: 'auto',
-  },
-  button: {
-    color: 'green',
-    height: '100%',
-  },
-});
+import useStyles from './style';
 
 const Form = ({ createData }) => {
   const classes = useStyles();

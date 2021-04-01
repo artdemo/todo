@@ -1,5 +1,6 @@
+.env
+db.json
 # dependencies
 /node_modules
-
 # production
 # /build
