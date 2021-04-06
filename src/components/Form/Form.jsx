@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import useStyles from './style';
+import { createTask } from '../../store/tasks/actions';
 
-const Form = ({ createData }) => {
+const Form = ({ createTask, isCreatePending, isCreateFailed }) => {
   const classes = useStyles();
 
   const [value, setValue] = useState('');
-  const [isLoading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // If a request ended up with error leave the form filled
+    if (isCreateFailed === null || isCreateFailed === true) return;
+    // Reset the form after submitting new task
+    setValue('');
+  }, [isCreateFailed]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = (e) => {
     setValue(e.currentTarget.value);
@@ -18,19 +26,11 @@ const Form = ({ createData }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (value.trim() === '' || isLoading) return;
+    if (value.trim() === '' || isCreatePending) return;
 
-    setLoading(true);
-
-    createData({
+    createTask({
       text: value.trim(),
       isChecked: false,
-    }).then((response) => {
-      setLoading(false);
-
-      if (response === undefined || !response.isAxiosError) {
-        setValue('');
-      }
     });
   };
 
@@ -50,7 +50,7 @@ const Form = ({ createData }) => {
           />
         </Grid>
         <Grid item xs={3}>
-          {isLoading ? (
+          {isCreatePending ? (
             <CircularProgress color="secondary" className={classes.progress} />
           ) : (
             <Button
@@ -69,4 +69,9 @@ const Form = ({ createData }) => {
   );
 };
 
-export default Form;
+const mapStateToProps = ({ tasks }) => ({
+  isCreatePending: tasks.requests.isCreatePending,
+  isCreateFailed: tasks.requests.isCreateFailed,
+});
+
+export default connect(mapStateToProps, { createTask })(Form);

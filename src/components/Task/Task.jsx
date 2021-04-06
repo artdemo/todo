@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
@@ -6,73 +7,53 @@ import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import useStyles from './style';
+import { updateTask, removeTask } from '../../store/tasks/actions';
 
-const Task = ({ id, text, isChecked, updateData, deleteData }) => {
+const Task = ({ id, text, isChecked, updateTask, removeTask, isPending }) => {
   const classes = useStyles();
 
-  const [taskData, setData] = useState({ text, isChecked });
-  const [isLoading, setLoading] = useState(false);
+  const [textValue, setTextValue] = useState(text);
 
   const handleCheckChange = (e) => {
-    setData({ ...taskData, isChecked: e.currentTarget.checked });
-
-    updateData(id, { ...taskData, isChecked: e.currentTarget.checked }).then(
-      (error) => {
-        if (error && error.isAxiosError) {
-          setData({ text, isChecked });
-        }
-      },
-    );
+    updateTask({ id, text: textValue, isChecked: e.currentTarget.checked });
   };
 
   const handleTextChange = (e) => {
-    setData({ ...taskData, text: e.currentTarget.value });
+    setTextValue(e.currentTarget.value);
   };
 
   const handleClick = () => {
-    setLoading(true);
-
-    deleteData(id).then((error) => {
-      if (error && error.isAxiosError) {
-        setData({ text, isChecked });
-      }
-
-      setLoading(false);
-    });
+    removeTask(id);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    updateData(id, taskData).then((error) => {
-      if (error && error.isAxiosError) {
-        setData({ text, isChecked });
-      }
-    });
+    updateTask({ id, text: textValue, isChecked });
   };
 
   return (
-    <form onSubmit={handleSubmit} className={classes.form}>
+    <form className={classes.form} onSubmit={handleSubmit}>
       <Grid container alignItems="center" spacing={2}>
         <Grid item>
           <Checkbox
+            checked={isChecked}
             onChange={handleCheckChange}
-            checked={taskData.isChecked}
             className={classes.checkbox}
           />
         </Grid>
         <Grid item className={classes.item}>
           <TextField
-            onChange={handleTextChange}
-            value={taskData.text}
+            value={textValue}
             fullWidth
             InputProps={{
               className: classes.field,
             }}
+            onChange={handleTextChange}
           />
         </Grid>
         <Grid item>
-          {isLoading ? (
+          {isPending ? (
             <CircularProgress color="secondary" />
           ) : (
             <IconButton color="secondary" onClick={handleClick}>
@@ -85,4 +66,12 @@ const Task = ({ id, text, isChecked, updateData, deleteData }) => {
   );
 };
 
-export default Task;
+const mapStateToProps = ({ tasks }, { id }) => {
+  const isPending = tasks.requests.pendingTasks.includes(id);
+
+  return {
+    isPending,
+  };
+};
+
+export default connect(mapStateToProps, { updateTask, removeTask })(Task);

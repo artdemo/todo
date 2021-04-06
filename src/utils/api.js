@@ -1,29 +1,29 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: `${process.env.REACT_APP_API_URL}/todos`,
 });
 
 const getAllTasks = () =>
-  instance.get('todos').catch((e) => {
+  instance.get().catch((e) => {
     console.dir(e);
     throw e;
   });
 
 const postNewTask = (data) =>
-  instance.post('todos', data).catch((e) => {
+  instance.post('', data).catch((e) => {
     console.dir(e);
     throw e;
   });
 
 const putTask = (id, data) =>
-  instance.put(`todos/${id}`, data).catch((e) => {
+  instance.put(`${id}`, data).catch((e) => {
     console.dir(e);
     throw e;
   });
 
 const deleteTask = (id) =>
-  instance.delete(`todos/${id}`).catch((e) => {
+  instance.delete(`${id}`).catch((e) => {
     console.dir(e);
     throw e;
   });
