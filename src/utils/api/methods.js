@@ -1,29 +1,27 @@
-import axios from 'axios';
+import instance from './instance';
 
-export const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}/todos`,
-});
+const PATH = '/todos';
 
 export const getAllTasks = () =>
-  instance.get().catch((e) => {
+  instance.get(PATH).catch((e) => {
     console.dir(e);
     throw e;
   });
 
 export const postNewTask = (data) =>
-  instance.post('', data).catch((e) => {
+  instance.post(PATH, data).catch((e) => {
     console.dir(e);
     throw e;
   });
 
 export const putTask = (id, data) =>
-  instance.put(`${id}`, data).catch((e) => {
+  instance.put(`${PATH}/${id}`, data).catch((e) => {
     console.dir(e);
     throw e;
   });
 
 export const deleteTask = (id) =>
-  instance.delete(`${id}`).catch((e) => {
+  instance.delete(`${PATH}/${id}`).catch((e) => {
     console.dir(e);
     throw e;
   });

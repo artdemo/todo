@@ -10,7 +10,12 @@ import {
   SET_TASKS_DELETE_REQUEST,
   SET_TASKS_DELETE_ERROR,
 } from './types';
-import { getAllTasks, postNewTask, putTask, deleteTask } from '../../utils/api';
+import {
+  getAllTasks,
+  postNewTask,
+  putTask,
+  deleteTask,
+} from '../../utils/api/methods';
 
 export const getTasks = () => (dispatch) => {
   dispatch({
