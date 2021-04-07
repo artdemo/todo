@@ -12,8 +12,8 @@ import {
 } from './types';
 
 const initialState = {
-  data: [],
-  requests: {
+  taskList: [],
+  requestStatus: {
     isGetPending: false,
     isCreatePending: false,
     isCreateFailed: null,
@@ -21,38 +21,38 @@ const initialState = {
   },
 };
 
-const tasks = (state = initialState, action) => {
+const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_TASKS_GET_REQUEST:
       return {
         ...state,
-        requests: {
-          ...state.requests,
+        requestStatus: {
+          ...state.requestStatus,
           isGetPending: true,
         },
       };
     case SET_TASKS_GET_ERROR:
       return {
         ...state,
-        requests: {
-          ...state.requests,
+        requestStatus: {
+          ...state.requestStatus,
           isGetPending: false,
         },
       };
     case SET_TASKS:
       return {
         ...state,
-        data: action.payload,
-        requests: {
-          ...state.requests,
+        taskList: action.payload,
+        requestStatus: {
+          ...state.requestStatus,
           isGetPending: false,
         },
       };
     case SET_TASKS_CREATE_REQUEST:
       return {
         ...state,
-        requests: {
-          ...state.requests,
+        requestStatus: {
+          ...state.requestStatus,
           isCreatePending: true,
           isCreateFailed: null,
         },
@@ -60,8 +60,8 @@ const tasks = (state = initialState, action) => {
     case SET_TASKS_CREATE_ERROR:
       return {
         ...state,
-        requests: {
-          ...state.requests,
+        requestStatus: {
+          ...state.requestStatus,
           isCreatePending: false,
           isCreateFailed: true,
         },
@@ -69,60 +69,58 @@ const tasks = (state = initialState, action) => {
     case ADD_TASK:
       return {
         ...state,
-        data: [...state.data, action.payload],
-        requests: {
-          ...state.requests,
+        taskList: [...state.taskList, action.payload],
+        requestStatus: {
+          ...state.requestStatus,
           isCreatePending: false,
           isCreateFailed: false,
         },
       };
     case UPDATE_TASK: {
-      const updatedTasks = state.data.map((task) => {
-        if (task.id === action.payload.id) return action.payload;
-
-        return task;
-      });
+      const updatedTasks = state.taskList.map((task) =>
+        task.id === action.payload.id ? action.payload : task,
+      );
 
       return {
         ...state,
-        data: updatedTasks,
+        taskList: updatedTasks,
       };
     }
     case SET_TASKS_DELETE_REQUEST:
       return {
         ...state,
-        requests: {
-          ...state.requests,
-          pendingTasks: [...state.requests.pendingTasks, action.payload],
+        requestStatus: {
+          ...state.requestStatus,
+          pendingTasks: [...state.requestStatus.pendingTasks, action.payload],
         },
       };
     case SET_TASKS_DELETE_ERROR: {
-      const filteredPendingTasks = state.requests.pendingTasks.filter(
+      const filteredPendingTasks = state.requestStatus.pendingTasks.filter(
         (id) => id !== action.payload,
       );
 
       return {
         ...state,
-        requests: {
-          ...state.requests,
+        requestStatus: {
+          ...state.requestStatus,
           pendingTasks: filteredPendingTasks,
         },
       };
     }
     case DELETE_TASK: {
-      const filteredTasks = state.data.filter(
+      const filteredTasks = state.taskList.filter(
         (task) => task.id !== action.payload,
       );
 
-      const filteredPendingTasks = state.requests.pendingTasks.filter(
+      const filteredPendingTasks = state.requestStatus.pendingTasks.filter(
         (id) => id !== action.payload,
       );
 
       return {
         ...state,
-        data: filteredTasks,
-        requests: {
-          ...state.requests,
+        taskList: filteredTasks,
+        requestStatus: {
+          ...state.requestStatus,
           pendingTasks: filteredPendingTasks,
         },
       };
@@ -132,4 +130,4 @@ const tasks = (state = initialState, action) => {
   }
 };
 
-export default tasks;
+export default taskReducer;

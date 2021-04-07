@@ -69,9 +69,9 @@ const Form = ({ createTask, isCreatePending, isCreateFailed }) => {
   );
 };
 
-const mapStateToProps = ({ tasks }) => ({
-  isCreatePending: tasks.requests.isCreatePending,
-  isCreateFailed: tasks.requests.isCreateFailed,
+const mapStateToProps = ({ taskReducer }) => ({
+  isCreatePending: taskReducer.requestStatus.isCreatePending,
+  isCreateFailed: taskReducer.requestStatus.isCreateFailed,
 });
 
 export default connect(mapStateToProps, { createTask })(Form);

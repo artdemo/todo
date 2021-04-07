@@ -10,26 +10,30 @@ import {
   SET_TASKS_DELETE_REQUEST,
   SET_TASKS_DELETE_ERROR,
 } from './types';
-import { getAllTasks, postNewTask, putTask, deleteTask } from '../../utils/api';
+import {
+  getAllTasks,
+  postNewTask,
+  putTask,
+  deleteTask,
+} from '../../utils/api/methods';
 
 export const getTasks = () => (dispatch) => {
   dispatch({
     type: SET_TASKS_GET_REQUEST,
   });
 
-  getAllTasks().then(
-    (response) => {
+  getAllTasks()
+    .then((response) => {
       dispatch({
         type: SET_TASKS,
         payload: response.data,
       });
-    },
-    () => {
+    })
+    .catch(() => {
       dispatch({
         type: SET_TASKS_GET_ERROR,
       });
-    },
-  );
+    });
 };
 
 export const createTask = (task) => (dispatch) => {
@@ -37,19 +41,18 @@ export const createTask = (task) => (dispatch) => {
     type: SET_TASKS_CREATE_REQUEST,
   });
 
-  postNewTask(task).then(
-    (response) => {
+  postNewTask(task)
+    .then((response) => {
       dispatch({
         type: ADD_TASK,
         payload: response.data,
       });
-    },
-    () => {
+    })
+    .catch(() => {
       dispatch({
         type: SET_TASKS_CREATE_ERROR,
       });
-    },
-  );
+    });
 };
 
 export const updateTask = (task) => (dispatch) => {
@@ -68,18 +71,17 @@ export const removeTask = (id) => (dispatch) => {
     payload: id,
   });
 
-  deleteTask(id).then(
-    () => {
+  deleteTask(id)
+    .then(() => {
       dispatch({
         type: DELETE_TASK,
         payload: id,
       });
-    },
-    () => {
+    })
+    .catch(() => {
       dispatch({
         type: SET_TASKS_DELETE_ERROR,
         payload: id,
       });
-    },
-  );
+    });
 };

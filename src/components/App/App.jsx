@@ -10,7 +10,7 @@ import Task from '../Task';
 import useStyles from './style';
 import { getTasks } from '../../store/tasks/actions';
 
-const App = ({ data, isGetPending, getTasks }) => {
+const App = ({ tasks, isGetPending, getTasks }) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const App = ({ data, isGetPending, getTasks }) => {
         <Paper elevation={3} className={classes.paper}>
           <Form />
           <TaskList>
-            {data.map(({ id, text, isChecked }) => (
+            {tasks.map(({ id, text, isChecked }) => (
               <ListItem key={id} className={classes.gutters}>
                 <Task id={id} text={text} isChecked={isChecked} />
               </ListItem>
@@ -43,9 +43,9 @@ const App = ({ data, isGetPending, getTasks }) => {
   );
 };
 
-const mapStateToProps = ({ tasks }) => ({
-  data: tasks.data,
-  isGetPending: tasks.requests.isGetPending,
+const mapStateToProps = ({ taskReducer }) => ({
+  tasks: taskReducer.taskList,
+  isGetPending: taskReducer.requestStatus.isGetPending,
 });
 
 export default connect(mapStateToProps, {

@@ -1,11 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import tasks from './tasks';
+import taskReducer from './tasks';
 
 const store = createStore(
   combineReducers({
-    tasks,
+    taskReducer,
   }),
   composeWithDevTools(applyMiddleware(thunk)),
 );
