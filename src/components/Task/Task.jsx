@@ -66,8 +66,8 @@ const Task = ({ id, text, isChecked, updateTask, removeTask, isPending }) => {
   );
 };
 
-const mapStateToProps = ({ tasks }, { id }) => {
-  const isPending = tasks.requests.pendingTasks.includes(id);
+const mapStateToProps = ({ taskReducer }, { id }) => {
+  const isPending = taskReducer.requestStatus.pendingTasks.includes(id);
 
   return {
     isPending,
