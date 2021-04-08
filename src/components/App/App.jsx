@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -8,14 +7,12 @@ import Form from '../Form';
 import TaskList from '../TaskList';
 import Task from '../Task';
 import useStyles from './style';
-import { getTasks } from '../../store/tasks/actions';
+import useAppHook from '../../hooks/useAppHook';
 
-const App = ({ tasks, isGetPending, getTasks }) => {
+const App = () => {
   const classes = useStyles();
 
-  useEffect(() => {
-    getTasks();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const { taskList, isGetPending } = useAppHook();
 
   if (isGetPending) {
     return (
@@ -31,7 +28,7 @@ const App = ({ tasks, isGetPending, getTasks }) => {
         <Paper elevation={3} className={classes.paper}>
           <Form />
           <TaskList>
-            {tasks.map(({ id, text, isChecked }) => (
+            {taskList.map(({ id, text, isChecked }) => (
               <ListItem key={id} className={classes.gutters}>
                 <Task id={id} text={text} isChecked={isChecked} />
               </ListItem>
@@ -43,11 +40,4 @@ const App = ({ tasks, isGetPending, getTasks }) => {
   );
 };
 
-const mapStateToProps = ({ taskReducer }) => ({
-  tasks: taskReducer.taskList,
-  isGetPending: taskReducer.requestStatus.isGetPending,
-});
-
-export default connect(mapStateToProps, {
-  getTasks,
-})(App);
+export default App;

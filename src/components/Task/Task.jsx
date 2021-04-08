@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,10 +6,12 @@ import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import useStyles from './style';
-import { updateTask, removeTask } from '../../store/tasks/actions';
+import useTaskHook from '../../hooks/useTaskHook';
 
-const Task = ({ id, text, isChecked, updateTask, removeTask, isPending }) => {
+const Task = ({ id, text, isChecked }) => {
   const classes = useStyles();
+
+  const { isDeletePending, updateTask, removeTask } = useTaskHook(id);
 
   const [textValue, setTextValue] = useState(text);
 
@@ -53,7 +54,7 @@ const Task = ({ id, text, isChecked, updateTask, removeTask, isPending }) => {
           />
         </Grid>
         <Grid item>
-          {isPending ? (
+          {isDeletePending ? (
             <CircularProgress color="secondary" />
           ) : (
             <IconButton color="secondary" onClick={handleClick}>
@@ -66,12 +67,4 @@ const Task = ({ id, text, isChecked, updateTask, removeTask, isPending }) => {
   );
 };
 
-const mapStateToProps = ({ taskReducer }, { id }) => {
-  const isPending = taskReducer.requestStatus.pendingTasks.includes(id);
-
-  return {
-    isPending,
-  };
-};
-
-export default connect(mapStateToProps, { updateTask, removeTask })(Task);
+export default Task;

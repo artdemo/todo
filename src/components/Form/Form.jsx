@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import useStyles from './style';
-import { createTask } from '../../store/tasks/actions';
+import useFormHook from '../../hooks/useFormHook';
 
-const Form = ({ createTask, isCreatePending, isCreateFailed }) => {
+const Form = () => {
   const classes = useStyles();
+
+  const { createTask, isCreatePending, isCreateFailed } = useFormHook();
 
   const [value, setValue] = useState('');
 
@@ -69,9 +70,4 @@ const Form = ({ createTask, isCreatePending, isCreateFailed }) => {
   );
 };
 
-const mapStateToProps = ({ taskReducer }) => ({
-  isCreatePending: taskReducer.requestStatus.isCreatePending,
-  isCreateFailed: taskReducer.requestStatus.isCreateFailed,
-});
-
-export default connect(mapStateToProps, { createTask })(Form);
+export default Form;
