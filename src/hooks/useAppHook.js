@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -12,11 +12,11 @@ export default () => {
   const taskList = useSelector(taskListSelector);
   const isGetPending = useSelector(isGetPendingSelector);
 
-  const getTasks = () => dispatch(getTasksAction());
+  const getTasks = useCallback(() => dispatch(getTasksAction()), [dispatch]);
 
   useEffect(() => {
     getTasks();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [getTasks]);
 
   return {
     taskList,

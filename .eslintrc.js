@@ -11,5 +11,5 @@ module.exports = {
   },
   plugins: ['import', 'jsx-a11y', 'react', 'react-hooks'],
   extends: ['eslint:recommended', 'airbnb', 'airbnb/hooks', 'prettier'],
-  rules: { 'react/prop-types': 'off', 'no-shadow': 'off' },
+  rules: { 'react/prop-types': 'error', 'no-shadow': 'off' },
 };

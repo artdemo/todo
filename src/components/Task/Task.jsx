@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
@@ -65,6 +66,12 @@ const Task = ({ id, text, isChecked }) => {
       </Grid>
     </form>
   );
+};
+
+Task.propTypes = {
+  id: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+  isChecked: PropTypes.bool.isRequired,
 };
 
 export default Task;
