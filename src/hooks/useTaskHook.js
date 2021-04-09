@@ -7,7 +7,6 @@ import { isDeletePendingSelector } from '../store/tasks/selectors';
 
 export default (id) => {
   const dispatch = useDispatch();
-  // Bad logic!!!
   const isDeletePending = useSelector(isDeletePendingSelector(id));
 
   const updateTask = (task) => dispatch(updateTaskAction(task));
