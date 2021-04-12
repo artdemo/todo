@@ -9,7 +9,7 @@ export default (id) => {
   const dispatch = useDispatch();
   const isDeletePending = useSelector(isDeletePendingSelector(id));
 
-  const updateTask = (task) => dispatch(updateTaskAction(task));
+  const updateTask = (id, data) => dispatch(updateTaskAction(id, data));
   const removeTask = (id) => dispatch(removeTaskAction(id));
 
   return {

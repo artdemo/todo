@@ -13,7 +13,7 @@ import {
 import {
   getAllTasks,
   postNewTask,
-  putTask,
+  patchTask,
   deleteTask,
 } from '../../utils/api/methods';
 
@@ -55,14 +55,15 @@ export const createTask = (task) => (dispatch) => {
     });
 };
 
-export const updateTask = (task) => (dispatch) => {
+export const updateTask = (id, data) => (dispatch) => {
   // First change user interface
   dispatch({
     type: UPDATE_TASK,
-    payload: task,
+    id,
+    data,
   });
   // Then send to the server
-  putTask(task.id, task);
+  patchTask(id, data);
 };
 
 export const removeTask = (id) => (dispatch) => {

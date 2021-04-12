@@ -14,8 +14,8 @@ export const postNewTask = (data) =>
     throw e;
   });
 
-export const putTask = (id, data) =>
-  instance.put(`${PATH}/${id}`, data).catch((e) => {
+export const patchTask = (id, data) =>
+  instance.patch(`${PATH}/${id}`, data).catch((e) => {
     console.dir(e);
     throw e;
   });

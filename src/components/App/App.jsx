@@ -14,6 +14,8 @@ const App = () => {
 
   const { taskList, isGetPending } = useAppHook();
 
+  taskList.sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite));
+
   if (isGetPending) {
     return (
       <div className={classes.progress}>
@@ -28,9 +30,14 @@ const App = () => {
         <Paper elevation={3} className={classes.paper}>
           <Form />
           <TaskList>
-            {taskList.map(({ id, text, isChecked }) => (
+            {taskList.map(({ id, text, isChecked, isFavorite }) => (
               <ListItem key={id} className={classes.gutters}>
-                <Task id={id} text={text} isChecked={isChecked} />
+                <Task
+                  id={id}
+                  text={text}
+                  isChecked={isChecked}
+                  isFavorite={isFavorite}
+                />
               </ListItem>
             ))}
           </TaskList>

@@ -6,37 +6,60 @@ import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import StarIcon from './StarIcon';
 import useStyles from './style';
 import useTaskHook from '../../hooks/useTaskHook';
 
-const Task = ({ id, text, isChecked }) => {
+const Task = ({ id, text, isChecked, isFavorite }) => {
   const classes = useStyles();
 
   const { isDeletePending, updateTask, removeTask } = useTaskHook(id);
 
   const [textValue, setTextValue] = useState(text);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleCheckChange = (e) => {
-    updateTask({ id, text: textValue, isChecked: e.currentTarget.checked });
+    updateTask(id, { isChecked: e.currentTarget.checked });
   };
 
   const handleTextChange = (e) => {
     setTextValue(e.currentTarget.value);
   };
 
-  const handleClick = () => {
+  const handleDelete = () => {
     removeTask(id);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    updateTask(id, { text: textValue });
+  };
 
-    updateTask({ id, text: textValue, isChecked });
+  const handleHover = () => {
+    setIsHovered(true);
+  };
+
+  const handleLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleMarkFavorite = () => {
+    updateTask(id, { isFavorite: !isFavorite });
   };
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
       <Grid container alignItems="center" spacing={2}>
+        <Grid item>
+          <IconButton
+            className={classes.favorite}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
+            onClick={handleMarkFavorite}
+          >
+            <StarIcon isHovered={isHovered} isFavorite={isFavorite} />
+          </IconButton>
+        </Grid>
         <Grid item>
           <Checkbox
             checked={isChecked}
@@ -58,7 +81,7 @@ const Task = ({ id, text, isChecked }) => {
           {isDeletePending ? (
             <CircularProgress color="secondary" />
           ) : (
-            <IconButton color="secondary" onClick={handleClick}>
+            <IconButton color="secondary" onClick={handleDelete}>
               <ClearIcon />
             </IconButton>
           )}
@@ -72,6 +95,7 @@ Task.propTypes = {
   id: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,
   isChecked: PropTypes.bool.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
 };
 
 export default Task;
