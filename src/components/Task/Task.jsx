@@ -1,68 +1,62 @@
+/*eslint-disable*/
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import ClearIcon from '@material-ui/icons/Clear';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import StarIcon from './StarIcon';
+import FavoriteButton from './FavoriteButton';
+import DeleteButton from './DeleteButton';
 import useStyles from './style';
 import useTaskHook from '../../hooks/useTaskHook';
 
-const Task = ({ id, text, isChecked, isFavorite }) => {
+const Task = ({ id, text, isCompleted, isFavorite }) => {
   const classes = useStyles();
 
   const { isDeletePending, updateTask, removeTask } = useTaskHook(id);
 
   const [textValue, setTextValue] = useState(text);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleCheckChange = (e) => {
-    updateTask(id, { isChecked: e.currentTarget.checked });
+    const dataToUpdate = { isCompleted: e.currentTarget.checked };
+    // Reset isFavorite prop after task has been marked as completed
+    if (isFavorite) dataToUpdate.isFavorite = false;
+
+    updateTask(id, dataToUpdate);
   };
 
   const handleTextChange = (e) => {
-    setTextValue(e.currentTarget.value);
-  };
+    // Edit task only on the Main page
+    if (isCompleted) return;
 
-  const handleDelete = () => {
-    removeTask(id);
+    setTextValue(e.currentTarget.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Edit task only on the Main page
+    if (isCompleted) return;
+
     updateTask(id, { text: textValue });
-  };
-
-  const handleHover = () => {
-    setIsHovered(true);
-  };
-
-  const handleLeave = () => {
-    setIsHovered(false);
-  };
-
-  const handleMarkFavorite = () => {
-    updateTask(id, { isFavorite: !isFavorite });
   };
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
       <Grid container alignItems="center" spacing={2}>
-        <Grid item>
-          <IconButton
-            className={classes.favorite}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleLeave}
-            onClick={handleMarkFavorite}
-          >
-            <StarIcon isHovered={isHovered} isFavorite={isFavorite} />
-          </IconButton>
-        </Grid>
+        {!isCompleted && (
+          <Grid item>
+            <FavoriteButton
+              handleMarkFavorite={() =>
+                updateTask(id, { isFavorite: !isFavorite })
+              }
+              isFavorite={isFavorite}
+            />
+          </Grid>
+        )}
         <Grid item>
           <Checkbox
-            checked={isChecked}
+            checked={isCompleted}
             onChange={handleCheckChange}
             className={classes.checkbox}
           />
@@ -78,13 +72,10 @@ const Task = ({ id, text, isChecked, isFavorite }) => {
           />
         </Grid>
         <Grid item>
-          {isDeletePending ? (
-            <CircularProgress color="secondary" />
-          ) : (
-            <IconButton color="secondary" onClick={handleDelete}>
-              <ClearIcon />
-            </IconButton>
-          )}
+          <DeleteButton
+            isDeletePending={isDeletePending}
+            handleDelete={() => removeTask(id)}
+          />
         </Grid>
       </Grid>
     </form>
@@ -94,7 +85,7 @@ const Task = ({ id, text, isChecked, isFavorite }) => {
 Task.propTypes = {
   id: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,
-  isChecked: PropTypes.bool.isRequired,
+  isCompleted: PropTypes.bool.isRequired,
   isFavorite: PropTypes.bool.isRequired,
 };
 

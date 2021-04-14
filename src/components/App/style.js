@@ -7,13 +7,8 @@ const useStyles = makeStyles({
     top: '50%',
     transform: 'translate(-50%, -50%)',
   },
-
-  paper: {
-    padding: 10,
-  },
-
-  gutters: {
-    padding: 0,
+  bar: {
+    marginBottom: 50,
   },
 });
 

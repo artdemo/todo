@@ -1,4 +1,9 @@
-export const taskListSelector = ({ taskReducer }) => taskReducer.taskList;
+export const taskListFavoriteSelector = ({ taskReducer }) =>
+  taskReducer.taskList
+    .filter((task) => !task.isCompleted)
+    .sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite));
+export const taskListCompletedSelector = ({ taskReducer }) =>
+  taskReducer.taskList.filter((task) => task.isCompleted);
 export const isGetPendingSelector = ({ taskReducer }) =>
   taskReducer.requestStatus.isGetPending;
 export const isCreatePendingSelector = ({ taskReducer }) =>

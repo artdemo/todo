@@ -1,20 +1,17 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ListItem from '@material-ui/core/ListItem';
-import Form from '../Form';
-import TaskList from '../TaskList';
-import Task from '../Task';
-import useStyles from './style';
+import { withRouter, Route, Redirect, Switch, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { CircularProgress, Tabs, Tab, AppBar } from '@material-ui/core';
+import Main from '../../pages/Main';
+import Completed from '../../pages/Completed';
+import Error from '../../pages/Error';
 import useAppHook from '../../hooks/useAppHook';
+import useStyles from './style';
 
-const App = () => {
+const App = ({ location }) => {
+  const isGetPending = useAppHook();
+
   const classes = useStyles();
-
-  const { taskList, isGetPending } = useAppHook();
-
-  taskList.sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite));
 
   if (isGetPending) {
     return (
@@ -26,25 +23,31 @@ const App = () => {
 
   return (
     <>
-      <Container maxWidth="sm">
-        <Paper elevation={3} className={classes.paper}>
-          <Form />
-          <TaskList>
-            {taskList.map(({ id, text, isChecked, isFavorite }) => (
-              <ListItem key={id} className={classes.gutters}>
-                <Task
-                  id={id}
-                  text={text}
-                  isChecked={isChecked}
-                  isFavorite={isFavorite}
-                />
-              </ListItem>
-            ))}
-          </TaskList>
-        </Paper>
-      </Container>
+      <AppBar position="static" className={classes.bar}>
+        <Tabs value={location.pathname} centered>
+          <Tab label="Main" component={Link} to="/main" value="/main" />
+          <Tab
+            label="Completed"
+            component={Link}
+            to="/completed"
+            value="/completed"
+          />
+        </Tabs>
+      </AppBar>
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/completed" />
+        </Route>
+        <Route path="/main" component={Main} />
+        <Route path="/completed" component={Completed} />
+        <Route component={Error} />
+      </Switch>
     </>
   );
 };
 
-export default App;
+App.propTypes = {
+  location: PropTypes.objectOf(PropTypes.string).isRequired,
+};
+
+export default withRouter(App);

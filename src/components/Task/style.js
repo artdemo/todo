@@ -18,10 +18,6 @@ const useStyles = makeStyles({
   form: {
     flexGrow: 1,
   },
-
-  favorite: {
-    color: 'gold',
-  },
 });
 
 export default useStyles;

@@ -31,7 +31,7 @@ const Form = () => {
 
     createTask({
       text: value.trim(),
-      isChecked: false,
+      isCompleted: false,
       isFavorite: false,
     });
   };
