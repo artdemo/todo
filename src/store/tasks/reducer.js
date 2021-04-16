@@ -14,9 +14,9 @@ import {
 const initialState = {
   taskList: [],
   requestStatus: {
-    isGetPending: false,
     isCreatePending: false,
     isCreateFailed: null,
+    isResolved: false,
     pendingTasks: [],
   },
 };
@@ -28,7 +28,6 @@ const taskReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isGetPending: true,
         },
       };
     case SET_TASKS_GET_ERROR:
@@ -36,7 +35,7 @@ const taskReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isGetPending: false,
+          isResolved: true,
         },
       };
     case SET_TASKS:
@@ -45,7 +44,7 @@ const taskReducer = (state = initialState, action) => {
         taskList: action.payload,
         requestStatus: {
           ...state.requestStatus,
-          isGetPending: false,
+          isResolved: true,
         },
       };
     case SET_TASKS_CREATE_REQUEST:

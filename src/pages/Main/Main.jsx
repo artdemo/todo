@@ -1,18 +1,24 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import ListItem from '@material-ui/core/ListItem';
+import { Container, Paper, ListItem } from '@material-ui/core';
 import Form from '../../components/Form';
 import TaskList from '../../components/TaskList';
 import Task from '../../components/Task';
 import useStyles from './style';
+import useTaskRequestHook from '../../hooks/useTaskRequestHook';
 import { taskListFavoriteSelector } from '../../store/tasks/selectors';
+import Loader from '../../components/Loader';
 
 const Main = () => {
+  console.log('Main');
+
   const classes = useStyles();
 
+  const isResolved = useTaskRequestHook();
+
   const taskList = useSelector(taskListFavoriteSelector);
+
+  if (!isResolved) return <Loader />;
 
   return (
     <>

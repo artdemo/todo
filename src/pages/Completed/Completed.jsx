@@ -1,17 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import ListItem from '@material-ui/core/ListItem';
+import { Container, Paper, ListItem } from '@material-ui/core';
 import TaskList from '../../components/TaskList';
 import Task from '../../components/Task';
+import Loader from '../../components/Loader';
 import useStyles from './style';
+import useTaskRequestHook from '../../hooks/useTaskRequestHook';
 import { taskListCompletedSelector } from '../../store/tasks/selectors';
 
 const Completed = () => {
+  console.log('Completed');
+
   const classes = useStyles();
 
+  const isResolved = useTaskRequestHook();
+
   const taskList = useSelector(taskListCompletedSelector);
+
+  if (!isResolved) return <Loader />;
 
   return (
     <>

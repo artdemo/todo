@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import {
   SET_TASKS,
   ADD_TASK,
@@ -17,7 +19,14 @@ import {
   deleteTask,
 } from '../../utils/api/methods';
 
-export const getTasks = () => (dispatch) => {
+export const getTasks = () => (dispatch, getState) => {
+  const { taskReducer } = getState();
+
+  // If data was already requested from the server take it from the store
+  if (taskReducer.requestStatus.isResolved) return;
+
+  console.log('Request');
+
   dispatch({
     type: SET_TASKS_GET_REQUEST,
   });
