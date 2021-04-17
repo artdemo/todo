@@ -9,15 +9,19 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  SvgIcon,
 } from '@material-ui/core';
 import useStyles from './style';
+import set from '../../utils/set.json';
+
+const { colors, icons } = set;
 
 const Settings = () => {
   const classes = useStyles();
 
   const [category, setCategory] = useState('');
-  const [icon, setIcon] = useState('');
-  const [color, setColor] = useState('');
+  const [icon, setIcon] = useState(0);
+  const [color, setColor] = useState([]);
 
   const handleCategoryChange = (e) => {
     setCategory(e.currentTarget.value);
@@ -61,10 +65,23 @@ const Settings = () => {
                     labelId="icon-label"
                     label="Icon"
                     onChange={handleIconChange}
+                    renderValue={(selected) => (
+                      <SvgIcon className={classes.iconTabSelected}>
+                        <g
+                          dangerouslySetInnerHTML={{
+                            __html: icons[selected].content,
+                          }}
+                        />
+                      </SvgIcon>
+                    )}
                   >
-                    <MenuItem value={1}>Place</MenuItem>
-                    <MenuItem value={2}>Placehol</MenuItem>
-                    <MenuItem value={3}>Placeholder</MenuItem>
+                    {icons.map(({ name, content }, index) => (
+                      <MenuItem value={index} key={name}>
+                        <SvgIcon>
+                          <g dangerouslySetInnerHTML={{ __html: content }} />
+                        </SvgIcon>
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -79,11 +96,26 @@ const Settings = () => {
                     value={color}
                     labelId="color-label"
                     label="Color"
+                    multiple
                     onChange={handleColorChange}
+                    renderValue={(selected) =>
+                      selected.map((color) => (
+                        <Paper
+                          className={classes.colorTabSelected}
+                          key={color}
+                          style={{ backgroundColor: `${color}` }}
+                        />
+                      ))
+                    }
                   >
-                    <MenuItem value={1}>Place</MenuItem>
-                    <MenuItem value={2}>Placehol</MenuItem>
-                    <MenuItem value={3}>Placeholder</MenuItem>
+                    {colors.map((color) => (
+                      <MenuItem value={color} key={color}>
+                        <Paper
+                          className={classes.colorTab}
+                          style={{ backgroundColor: `${color}` }}
+                        />
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>

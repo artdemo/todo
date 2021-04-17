@@ -26,6 +26,25 @@ const useStyles = makeStyles({
   gutters: {
     padding: 0,
   },
+
+  colorTab: {
+    width: 24,
+    height: 24,
+  },
+
+  colorTabSelected: {
+    width: 12,
+    height: 12,
+    verticalAlign: 'baseline',
+    display: 'inline-block',
+    '& + &': {
+      marginLeft: 3,
+    },
+  },
+
+  iconTabSelected: {
+    fontSize: 15,
+  },
 });
 
 export default useStyles;
