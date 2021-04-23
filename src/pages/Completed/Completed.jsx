@@ -1,37 +1,39 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import ListItem from '@material-ui/core/ListItem';
-import TaskList from '../../components/TaskList';
+import List from '@material-ui/core/List';
 import Task from '../../components/Task';
-import useStyles from './style';
-import { taskListCompletedSelector } from '../../store/tasks/selectors';
+import FrameBox from '../../components/FrameBox';
+import ItemBox from '../../components/ItemBox';
+import MainLoader from '../../components/Loaders/MainLoader';
+import useCompletedHook from '../../hooks/useCompletedHook';
 
 const Completed = () => {
-  const classes = useStyles();
+  const {
+    isTasksResolved,
+    isCategoriesResolved,
+    taskList,
+  } = useCompletedHook();
 
-  const taskList = useSelector(taskListCompletedSelector);
+  if (!isTasksResolved || !isCategoriesResolved) return <MainLoader />;
 
   return (
-    <>
-      <Container maxWidth="sm">
-        <Paper elevation={3} className={classes.paper}>
-          <TaskList>
-            {taskList.map(({ id, text, isCompleted, isFavorite }) => (
-              <ListItem key={id} className={classes.gutters}>
-                <Task
-                  id={id}
-                  text={text}
-                  isCompleted={isCompleted}
-                  isFavorite={isFavorite}
-                />
-              </ListItem>
-            ))}
-          </TaskList>
-        </Paper>
-      </Container>
-    </>
+    <FrameBox>
+      <List>
+        {taskList.map(
+          ({ id, text, isCompleted, isFavorite, categoryId, color }) => (
+            <ItemBox key={id}>
+              <Task
+                id={id}
+                text={text}
+                isCompleted={isCompleted}
+                isFavorite={isFavorite}
+                categoryId={categoryId}
+                color={color}
+              />
+            </ItemBox>
+          ),
+        )}
+      </List>
+    </FrameBox>
   );
 };
 

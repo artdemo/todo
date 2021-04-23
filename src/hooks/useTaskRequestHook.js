@@ -1,11 +1,10 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isGetPendingSelector } from '../store/tasks/selectors';
+import { isResolvedSelector } from '../store/tasks/selectors';
 import { getTasks as getTasksAction } from '../store/tasks/actions';
 
 export default () => {
   const dispatch = useDispatch();
-  const isGetPending = useSelector(isGetPendingSelector);
 
   const getTasks = useCallback(() => dispatch(getTasksAction()), [dispatch]);
 
@@ -13,5 +12,7 @@ export default () => {
     getTasks();
   }, [getTasks]);
 
-  return isGetPending;
+  const isResolved = useSelector(isResolvedSelector);
+
+  return isResolved;
 };

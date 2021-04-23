@@ -7,8 +7,8 @@ import {
   SET_TASKS_GET_ERROR,
   SET_TASKS_CREATE_REQUEST,
   SET_TASKS_CREATE_ERROR,
-  SET_TASKS_DELETE_REQUEST,
-  SET_TASKS_DELETE_ERROR,
+  SET_TASKS_MODIFY_START,
+  SET_TASKS_MODIFY_FINISH,
 } from './types';
 import {
   getAllTasks,
@@ -17,7 +17,14 @@ import {
   deleteTask,
 } from '../../utils/api/methods';
 
-export const getTasks = () => (dispatch) => {
+export const getTasks = () => (dispatch, getState) => {
+  const { taskReducer } = getState();
+
+  // If data was already requested from the server take it from the store
+  if (taskReducer.requestStatus.isResolved) return;
+
+  console.log('Get tasks');
+
   dispatch({
     type: SET_TASKS_GET_REQUEST,
   });
@@ -56,19 +63,34 @@ export const createTask = (task) => (dispatch) => {
 };
 
 export const updateTask = (id, data) => (dispatch) => {
-  // First change user interface
   dispatch({
-    type: UPDATE_TASK,
-    id,
-    data,
+    type: SET_TASKS_MODIFY_START,
+    payload: id,
   });
-  // Then send to the server
-  patchTask(id, data);
+
+  return patchTask(id, data)
+    .then(() => {
+      dispatch({
+        type: UPDATE_TASK,
+        id,
+        data,
+      });
+    })
+    .catch((e) => {
+      alert('Something went wrong during request!\nTry again.');
+      throw e;
+    })
+    .finally(() => {
+      dispatch({
+        type: SET_TASKS_MODIFY_FINISH,
+        payload: id,
+      });
+    });
 };
 
 export const removeTask = (id) => (dispatch) => {
   dispatch({
-    type: SET_TASKS_DELETE_REQUEST,
+    type: SET_TASKS_MODIFY_START,
     payload: id,
   });
 
@@ -79,9 +101,9 @@ export const removeTask = (id) => (dispatch) => {
         payload: id,
       });
     })
-    .catch(() => {
+    .finally(() => {
       dispatch({
-        type: SET_TASKS_DELETE_ERROR,
+        type: SET_TASKS_MODIFY_FINISH,
         payload: id,
       });
     });

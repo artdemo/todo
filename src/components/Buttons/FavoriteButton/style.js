@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-  padding: {
-    padding: 0,
+  icon: {
+    position: 'absolute',
   },
 });
 

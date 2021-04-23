@@ -1,39 +1,92 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import ListItem from '@material-ui/core/ListItem';
+import React, { useState, useEffect } from 'react';
+import { Grid, List } from '@material-ui/core';
+import FrameBox from '../../components/FrameBox';
 import Form from '../../components/Form';
-import TaskList from '../../components/TaskList';
+import TextControl from '../../components/TextControl';
+import SubmitButton from '../../components/Buttons/SubmitButton';
+import CategorySelect from '../../components/Selects/CategorySelect';
 import Task from '../../components/Task';
-import useStyles from './style';
-import { taskListFavoriteSelector } from '../../store/tasks/selectors';
+import ItemBox from '../../components/ItemBox';
+import MainLoader from '../../components/Loaders/MainLoader';
+import useMainHook from '../../hooks/useMainHook';
 
 const Main = () => {
-  const classes = useStyles();
+  const {
+    createTask,
+    isCreatePending,
+    isCreateFailed,
+    categoryListFlat,
+    taskList,
+    isTasksResolved,
+    isCategoriesResolved,
+  } = useMainHook();
 
-  const taskList = useSelector(taskListFavoriteSelector);
+  const [textControlValue, setTextControlValue] = useState('');
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
+
+  useEffect(() => {
+    // If a request ended up with error leave the form filled
+    if (isCreateFailed === null || isCreateFailed === true) return;
+    // Reset the form after submitting new task
+    setTextControlValue('');
+  }, [isCreateFailed]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!isTasksResolved || !isCategoriesResolved) return <MainLoader />;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (textControlValue.trim() === '' || isCreatePending) return;
+
+    const { id: categoryId, color } = categoryListFlat[selectedCategoryIndex];
+
+    createTask({
+      text: textControlValue.trim(),
+      isCompleted: false,
+      isFavorite: false,
+      categoryId,
+      color,
+    });
+  };
 
   return (
-    <>
-      <Container maxWidth="sm">
-        <Paper elevation={3} className={classes.paper}>
-          <Form />
-          <TaskList>
-            {taskList.map(({ id, text, isCompleted, isFavorite }) => (
-              <ListItem key={id} className={classes.gutters}>
-                <Task
-                  id={id}
-                  text={text}
-                  isCompleted={isCompleted}
-                  isFavorite={isFavorite}
-                />
-              </ListItem>
-            ))}
-          </TaskList>
-        </Paper>
-      </Container>
-    </>
+    <FrameBox>
+      <Form handleSubmit={handleSubmit}>
+        <Grid item xs={7}>
+          <TextControl
+            label="Task"
+            value={textControlValue}
+            handleChange={(e) => setTextControlValue(e.currentTarget.value)}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <CategorySelect
+            categoryList={categoryListFlat}
+            index={selectedCategoryIndex}
+            handleChange={(e) => setSelectedCategoryIndex(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <SubmitButton isLoading={isCreatePending} />
+        </Grid>
+      </Form>
+      <List>
+        {taskList.map(
+          ({ id, text, isCompleted, isFavorite, categoryId, color }) => (
+            <ItemBox key={id}>
+              <Task
+                id={id}
+                text={text}
+                isCompleted={isCompleted}
+                isFavorite={isFavorite}
+                categoryId={categoryId}
+                color={color}
+              />
+            </ItemBox>
+          ),
+        )}
+      </List>
+    </FrameBox>
   );
 };
 
