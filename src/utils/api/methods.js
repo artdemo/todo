@@ -32,3 +32,27 @@ export const getAllCategories = () =>
     console.dir(e);
     throw e;
   });
+
+export const postNewCategory = (data) =>
+  instance.post(PATH_TO_CATEGORIES, data).catch((e) => {
+    console.dir(e);
+    throw e;
+  });
+
+export const deleteCategory = (id) =>
+  instance.delete(`${PATH_TO_CATEGORIES}/${id}`).catch((e) => {
+    console.dir(e);
+    throw e;
+  });
+
+export const patchCategory = (id, data) =>
+  instance.patch(`${PATH_TO_CATEGORIES}/${id}`, data).catch((e) => {
+    console.dir(e);
+    throw e;
+  });
+
+export const getRelatedTasks = (categoryId) =>
+  instance.get(`${PATH_TO_TASKS}/?categoryId=${categoryId}`).catch((e) => {
+    console.dir(e);
+    throw e;
+  });

@@ -2,7 +2,7 @@ import React from 'react';
 import { CircularProgress, Box } from '@material-ui/core';
 import useStyles from './style';
 
-const Loader = () => {
+const MainLoader = () => {
   const classes = useStyles();
 
   return (
@@ -12,4 +12,4 @@ const Loader = () => {
   );
 };
 
-export default Loader;
+export default MainLoader;

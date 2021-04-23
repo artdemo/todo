@@ -1,140 +1,115 @@
-import React, { useState } from 'react';
-import {
-  Container,
-  Paper,
-  Grid,
-  TextField,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SvgIcon,
-} from '@material-ui/core';
-import useStyles from './style';
-import set from '../../utils/set.json';
-
-const { colors, icons } = set;
+import React, { useState, useEffect } from 'react';
+import { Grid, List } from '@material-ui/core';
+import MainLoader from '../../components/Loaders/MainLoader';
+import FrameBox from '../../components/FrameBox';
+import Form from '../../components/Form';
+import Category from '../../components/Category';
+import TextControl from '../../components/TextControl';
+import IconSelect from '../../components/Selects/IconSelect';
+import SubmitButton from '../../components/Buttons/SubmitButton';
+import ColorSelect from '../../components/Selects/ColorSelect';
+import ItemBox from '../../components/ItemBox';
+import useSettingsHook from '../../hooks/useSettingsHook';
 
 const Settings = () => {
-  const classes = useStyles();
+  const {
+    availableIcons,
+    colors,
+    isCreatePending,
+    isCreateFailed,
+    createCategory,
+    categoryList,
+    isResolved,
+  } = useSettingsHook();
 
-  const [category, setCategory] = useState('');
-  const [icon, setIcon] = useState(0);
-  const [color, setColor] = useState([]);
+  const [textControlValue, setTextControlValue] = useState('');
+  const [iconIndex, setIconIndex] = useState('');
+  const [selectedColors, setColors] = useState([]);
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.currentTarget.value);
+  useEffect(() => {
+    // If a request ended up with error leave the form filled
+    if (isCreateFailed === null || isCreateFailed === true) return;
+    // Reset the form after submitting new task
+    setTextControlValue('');
+  }, [isCreateFailed]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleCreateCategory = (e) => {
+    e.preventDefault();
+
+    if (isCreatePending) return;
+
+    const insertedText = textControlValue.trim();
+
+    if (insertedText.length >= 15) {
+      alert('Your category name should contain no more than 14 charachters');
+      return;
+    }
+    // Prevent creating category with empty filleds
+    if (insertedText === '' || iconIndex === '' || !selectedColors.length) {
+      alert('One of the fields is empty');
+      return;
+    }
+    // If it's the first created category, set it as default category
+    const isDefault = !categoryList.length;
+
+    createCategory({
+      name: textControlValue.trim(),
+      icon: availableIcons[iconIndex],
+      colors: selectedColors,
+      isDefault,
+    });
   };
 
-  const handleIconChange = (e) => {
-    setIcon(e.target.value);
-  };
-
-  const handleColorChange = (e) => {
-    setColor(e.target.value);
-  };
+  if (!isResolved) return <MainLoader />;
 
   return (
-    <>
-      <Container maxWidth="sm">
-        <Paper elevation={3} className={classes.paper}>
-          <form className={classes.form}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  variant="outlined"
-                  margin="none"
-                  size="small"
-                  fullWidth
-                  label="Category"
-                  autoFocus
-                  value={category}
-                  onChange={handleCategoryChange}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <FormControl
-                  variant="outlined"
-                  size="small"
-                  className={classes.formControl}
-                >
-                  <InputLabel id="icon-label">Icon</InputLabel>
-                  <Select
-                    value={icon}
-                    labelId="icon-label"
-                    label="Icon"
-                    onChange={handleIconChange}
-                    renderValue={(selected) => (
-                      <SvgIcon className={classes.iconTabSelected}>
-                        <g
-                          dangerouslySetInnerHTML={{
-                            __html: icons[selected].content,
-                          }}
-                        />
-                      </SvgIcon>
-                    )}
-                  >
-                    {icons.map(({ name, content }, index) => (
-                      <MenuItem value={index} key={name}>
-                        <SvgIcon>
-                          <g dangerouslySetInnerHTML={{ __html: content }} />
-                        </SvgIcon>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={2}>
-                <FormControl
-                  variant="outlined"
-                  size="small"
-                  className={classes.formControl}
-                >
-                  <InputLabel id="color-label">Color</InputLabel>
-                  <Select
-                    value={color}
-                    labelId="color-label"
-                    label="Color"
-                    multiple
-                    onChange={handleColorChange}
-                    renderValue={(selected) =>
-                      selected.map((color) => (
-                        <Paper
-                          className={classes.colorTabSelected}
-                          key={color}
-                          style={{ backgroundColor: `${color}` }}
-                        />
-                      ))
-                    }
-                  >
-                    {colors.map((color) => (
-                      <MenuItem value={color} key={color}>
-                        <Paper
-                          className={classes.colorTab}
-                          style={{ backgroundColor: `${color}` }}
-                        />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  fullWidth
-                  className={classes.button}
-                  color="inherit"
-                >
-                  Add
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </Paper>
-      </Container>
-    </>
+    <FrameBox>
+      <Form handleSubmit={handleCreateCategory}>
+        <Grid item xs={6}>
+          <TextControl
+            label="Category"
+            value={textControlValue}
+            handleChange={(e) => setTextControlValue(e.currentTarget.value)}
+            disabled={!availableIcons.length}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <IconSelect
+            icons={availableIcons}
+            iconIndex={iconIndex}
+            handleChange={(e) => setIconIndex(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <ColorSelect
+            icons={availableIcons}
+            colors={colors}
+            selectedColors={selectedColors}
+            handleChange={(e) => setColors(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <SubmitButton
+            isLoading={isCreatePending}
+            disabled={!availableIcons.length}
+          />
+        </Grid>
+      </Form>
+      <List>
+        {categoryList.map(({ id, name, icon, colors, isDefault }) => (
+          <ItemBox key={id}>
+            <Category
+              id={id}
+              name={name}
+              icon={icon}
+              colors={colors}
+              isDefault={isDefault}
+              key={`${name}-${id}`}
+            />
+          </ItemBox>
+        ))}
+      </List>
+    </FrameBox>
   );
 };
 

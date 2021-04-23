@@ -18,6 +18,10 @@ const useStyles = makeStyles({
   form: {
     flexGrow: 1,
   },
+
+  hidden: {
+    visibility: 'hidden',
+  },
 });
 
 export default useStyles;

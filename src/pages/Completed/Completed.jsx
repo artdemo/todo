@@ -1,43 +1,39 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Container, Paper, ListItem } from '@material-ui/core';
-import TaskList from '../../components/TaskList';
+import List from '@material-ui/core/List';
 import Task from '../../components/Task';
-import Loader from '../../components/Loader';
-import useStyles from './style';
-import useTaskRequestHook from '../../hooks/useTaskRequestHook';
-import { taskListCompletedSelector } from '../../store/tasks/selectors';
+import FrameBox from '../../components/FrameBox';
+import ItemBox from '../../components/ItemBox';
+import MainLoader from '../../components/Loaders/MainLoader';
+import useCompletedHook from '../../hooks/useCompletedHook';
 
 const Completed = () => {
-  console.log('Completed');
+  const {
+    isTasksResolved,
+    isCategoriesResolved,
+    taskList,
+  } = useCompletedHook();
 
-  const classes = useStyles();
-
-  const isResolved = useTaskRequestHook();
-
-  const taskList = useSelector(taskListCompletedSelector);
-
-  if (!isResolved) return <Loader />;
+  if (!isTasksResolved || !isCategoriesResolved) return <MainLoader />;
 
   return (
-    <>
-      <Container maxWidth="sm">
-        <Paper elevation={3} className={classes.paper}>
-          <TaskList>
-            {taskList.map(({ id, text, isCompleted, isFavorite }) => (
-              <ListItem key={id} className={classes.gutters}>
-                <Task
-                  id={id}
-                  text={text}
-                  isCompleted={isCompleted}
-                  isFavorite={isFavorite}
-                />
-              </ListItem>
-            ))}
-          </TaskList>
-        </Paper>
-      </Container>
-    </>
+    <FrameBox>
+      <List>
+        {taskList.map(
+          ({ id, text, isCompleted, isFavorite, categoryId, color }) => (
+            <ItemBox key={id}>
+              <Task
+                id={id}
+                text={text}
+                isCompleted={isCompleted}
+                isFavorite={isFavorite}
+                categoryId={categoryId}
+                color={color}
+              />
+            </ItemBox>
+          ),
+        )}
+      </List>
+    </FrameBox>
   );
 };
 

@@ -3,18 +3,23 @@ import {
   updateTask as updateTaskAction,
   removeTask as removeTaskAction,
 } from '../store/tasks/actions';
-import { isDeletePendingSelector } from '../store/tasks/selectors';
+import {
+  isModifyPendingSelector,
+  iconSelector,
+} from '../store/tasks/selectors';
 
-export default (id) => {
+export default (taskId, categoryId) => {
   const dispatch = useDispatch();
-  const isDeletePending = useSelector(isDeletePendingSelector(id));
+  const isModifyPending = useSelector(isModifyPendingSelector(taskId));
+  const icon = useSelector(iconSelector(categoryId));
 
-  const updateTask = (id, data) => dispatch(updateTaskAction(id, data));
-  const removeTask = (id) => dispatch(removeTaskAction(id));
+  const updateTask = (taskId, data) => dispatch(updateTaskAction(taskId, data));
+  const removeTask = (taskId) => dispatch(removeTaskAction(taskId));
 
   return {
-    isDeletePending,
+    isModifyPending,
     updateTask,
     removeTask,
+    icon,
   };
 };

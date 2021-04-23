@@ -4,10 +4,6 @@ const useStyles = makeStyles({
   paper: {
     padding: 10,
   },
-
-  gutters: {
-    padding: 0,
-  },
 });
 
 export default useStyles;

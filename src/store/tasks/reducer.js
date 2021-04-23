@@ -7,8 +7,8 @@ import {
   SET_TASKS_GET_ERROR,
   SET_TASKS_CREATE_REQUEST,
   SET_TASKS_CREATE_ERROR,
-  SET_TASKS_DELETE_REQUEST,
-  SET_TASKS_DELETE_ERROR,
+  SET_TASKS_MODIFY_START,
+  SET_TASKS_MODIFY_FINISH,
 } from './types';
 
 const initialState = {
@@ -85,7 +85,7 @@ const taskReducer = (state = initialState, action) => {
         taskList: updatedTasks,
       };
     }
-    case SET_TASKS_DELETE_REQUEST:
+    case SET_TASKS_MODIFY_START:
       return {
         ...state,
         requestStatus: {
@@ -93,7 +93,7 @@ const taskReducer = (state = initialState, action) => {
           pendingTasks: [...state.requestStatus.pendingTasks, action.payload],
         },
       };
-    case SET_TASKS_DELETE_ERROR: {
+    case SET_TASKS_MODIFY_FINISH: {
       const filteredPendingTasks = state.requestStatus.pendingTasks.filter(
         (id) => id !== action.payload,
       );
@@ -111,17 +111,9 @@ const taskReducer = (state = initialState, action) => {
         (task) => task.id !== action.payload,
       );
 
-      const filteredPendingTasks = state.requestStatus.pendingTasks.filter(
-        (id) => id !== action.payload,
-      );
-
       return {
         ...state,
         taskList: filteredTasks,
-        requestStatus: {
-          ...state.requestStatus,
-          pendingTasks: filteredPendingTasks,
-        },
       };
     }
     default:
