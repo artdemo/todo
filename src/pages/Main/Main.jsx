@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Grid, List } from '@material-ui/core';
 import FrameBox from '../../components/FrameBox';
 import Form from '../../components/Form';
@@ -29,7 +29,37 @@ const Main = () => {
     if (isCreateFailed === null || isCreateFailed === true) return;
     // Reset the form after submitting new task
     setTextControlValue('');
-  }, [isCreateFailed]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isCreateFailed]);
+
+  const tasksToRender = useMemo(
+    () =>
+      taskList.map(
+        ({ id, text, isCompleted, isFavorite, categoryId, color }) => (
+          <ItemBox key={id}>
+            <Task
+              id={id}
+              text={text}
+              isCompleted={isCompleted}
+              isFavorite={isFavorite}
+              categoryId={categoryId}
+              color={color}
+            />
+          </ItemBox>
+        ),
+      ),
+    [taskList],
+  );
+
+  const categorySelect = useMemo(
+    () => (
+      <CategorySelect
+        categoryList={categoryListFlat}
+        index={selectedCategoryIndex}
+        handleChange={(e) => setSelectedCategoryIndex(e.target.value)}
+      />
+    ),
+    [categoryListFlat, selectedCategoryIndex],
+  );
 
   if (!isTasksResolved || !isCategoriesResolved) return <MainLoader />;
 
@@ -60,32 +90,13 @@ const Main = () => {
           />
         </Grid>
         <Grid item xs={2}>
-          <CategorySelect
-            categoryList={categoryListFlat}
-            index={selectedCategoryIndex}
-            handleChange={(e) => setSelectedCategoryIndex(e.target.value)}
-          />
+          {categorySelect}
         </Grid>
         <Grid item xs={3}>
           <SubmitButton isLoading={isCreatePending} />
         </Grid>
       </Form>
-      <List>
-        {taskList.map(
-          ({ id, text, isCompleted, isFavorite, categoryId, color }) => (
-            <ItemBox key={id}>
-              <Task
-                id={id}
-                text={text}
-                isCompleted={isCompleted}
-                isFavorite={isFavorite}
-                categoryId={categoryId}
-                color={color}
-              />
-            </ItemBox>
-          ),
-        )}
-      </List>
+      <List>{tasksToRender}</List>
     </FrameBox>
   );
 };

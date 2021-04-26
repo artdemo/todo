@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   FormControl,
@@ -11,6 +11,19 @@ import useStyles from './style';
 
 const ColorSelect = ({ icons, colors, selectedColors, handleChange }) => {
   const classes = useStyles();
+
+  const menuItems = useMemo(
+    () =>
+      colors.map((color) => (
+        <MenuItem value={color} key={color}>
+          <Paper
+            className={classes.colorTab}
+            style={{ backgroundColor: `${color}` }}
+          />
+        </MenuItem>
+      )),
+    [colors, classes.colorTab],
+  );
 
   return (
     <FormControl
@@ -38,14 +51,7 @@ const ColorSelect = ({ icons, colors, selectedColors, handleChange }) => {
             : ''
         }
       >
-        {colors.map((color) => (
-          <MenuItem value={color} key={color}>
-            <Paper
-              className={classes.colorTab}
-              style={{ backgroundColor: `${color}` }}
-            />
-          </MenuItem>
-        ))}
+        {menuItems}
       </Select>
     </FormControl>
   );

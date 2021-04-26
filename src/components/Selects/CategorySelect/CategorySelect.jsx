@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { FormControl, Select, MenuItem, Typography } from '@material-ui/core';
 import Icon from '../../Icon';
@@ -6,6 +6,17 @@ import useStyles from './style';
 
 const CategorySelect = ({ categoryList, index, handleChange }) => {
   const classes = useStyles();
+
+  const menuItems = useMemo(
+    () =>
+      categoryList.map(({ name, icon, color }, index) => (
+        <MenuItem key={`${name}-${color}`} value={index}>
+          <Icon iconName={icon} iconColor={color} classProp={classes.icon} />
+          <Typography variant="subtitle2">{name}</Typography>
+        </MenuItem>
+      )),
+    [categoryList, classes.icon],
+  );
 
   return (
     <FormControl
@@ -25,12 +36,7 @@ const CategorySelect = ({ categoryList, index, handleChange }) => {
           return <Icon iconName={icon} iconColor={color} />;
         }}
       >
-        {categoryList.map(({ name, icon, color }, index) => (
-          <MenuItem key={`${name}-${color}`} value={index}>
-            <Icon iconName={icon} iconColor={color} classProp={classes.icon} />
-            <Typography variant="subtitle2">{name}</Typography>
-          </MenuItem>
-        ))}
+        {menuItems}
       </Select>
     </FormControl>
   );

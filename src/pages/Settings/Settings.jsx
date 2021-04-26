@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Grid, List } from '@material-ui/core';
 import MainLoader from '../../components/Loaders/MainLoader';
 import FrameBox from '../../components/FrameBox';
@@ -31,7 +31,47 @@ const Settings = () => {
     if (isCreateFailed === null || isCreateFailed === true) return;
     // Reset the form after submitting new task
     setTextControlValue('');
-  }, [isCreateFailed]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isCreateFailed]);
+
+  const categoryToRender = useMemo(
+    () =>
+      categoryList.map(({ id, name, icon, colors, isDefault }) => (
+        <ItemBox key={id}>
+          <Category
+            id={id}
+            name={name}
+            icon={icon}
+            colors={colors}
+            isDefault={isDefault}
+            key={`${name}-${id}`}
+          />
+        </ItemBox>
+      )),
+    [categoryList],
+  );
+
+  const colorSelect = useMemo(
+    () => (
+      <ColorSelect
+        icons={availableIcons}
+        colors={colors}
+        selectedColors={selectedColors}
+        handleChange={(e) => setColors(e.target.value)}
+      />
+    ),
+    [availableIcons, colors, selectedColors],
+  );
+
+  const iconSelect = useMemo(
+    () => (
+      <IconSelect
+        icons={availableIcons}
+        iconIndex={iconIndex}
+        handleChange={(e) => setIconIndex(e.target.value)}
+      />
+    ),
+    [availableIcons, iconIndex],
+  );
 
   const handleCreateCategory = (e) => {
     e.preventDefault();
@@ -44,7 +84,7 @@ const Settings = () => {
       alert('Your category name should contain no more than 14 charachters');
       return;
     }
-    // Prevent creating category with empty filleds
+    // Prevent creating category with empty fields
     if (insertedText === '' || iconIndex === '' || !selectedColors.length) {
       alert('One of the fields is empty');
       return;
@@ -74,19 +114,10 @@ const Settings = () => {
           />
         </Grid>
         <Grid item xs={2}>
-          <IconSelect
-            icons={availableIcons}
-            iconIndex={iconIndex}
-            handleChange={(e) => setIconIndex(e.target.value)}
-          />
+          {iconSelect}
         </Grid>
         <Grid item xs={2}>
-          <ColorSelect
-            icons={availableIcons}
-            colors={colors}
-            selectedColors={selectedColors}
-            handleChange={(e) => setColors(e.target.value)}
-          />
+          {colorSelect}
         </Grid>
         <Grid item xs={2}>
           <SubmitButton
@@ -95,20 +126,7 @@ const Settings = () => {
           />
         </Grid>
       </Form>
-      <List>
-        {categoryList.map(({ id, name, icon, colors, isDefault }) => (
-          <ItemBox key={id}>
-            <Category
-              id={id}
-              name={name}
-              icon={icon}
-              colors={colors}
-              isDefault={isDefault}
-              key={`${name}-${id}`}
-            />
-          </ItemBox>
-        ))}
-      </List>
+      <List>{categoryToRender}</List>
     </FrameBox>
   );
 };
