@@ -3,31 +3,46 @@ import {
   ADD_TASK,
   UPDATE_TASK,
   DELETE_TASK,
-  SET_TASKS_GET_REQUEST,
   SET_TASKS_GET_ERROR,
   SET_TASKS_CREATE_REQUEST,
   SET_TASKS_CREATE_ERROR,
   SET_TASKS_MODIFY_START,
   SET_TASKS_MODIFY_FINISH,
+  SET_TASKS_SORT_REQUEST,
 } from './types';
 
 const initialState = {
   taskList: [],
+  resolvedSortState: {},
   requestStatus: {
     isCreatePending: false,
     isCreateFailed: null,
-    isResolved: false,
+    isSortPending: false,
+    isResolved: null,
     pendingTasks: [],
   },
 };
 
 const taskReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TASKS_GET_REQUEST:
+    // ================= GET REQUEST =============== //
+    case SET_TASKS:
+      return {
+        ...state,
+        taskList: action.payload.taskList,
+        resolvedSortState: action.payload.nextSortObj,
+        requestStatus: {
+          ...state.requestStatus,
+          isResolved: true,
+          isSortPending: false,
+        },
+      };
+    case SET_TASKS_SORT_REQUEST:
       return {
         ...state,
         requestStatus: {
           ...state.requestStatus,
+          isSortPending: true,
         },
       };
     case SET_TASKS_GET_ERROR:
@@ -35,16 +50,19 @@ const taskReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isResolved: true,
+          isResolved: false,
+          isSortPending: false,
         },
       };
-    case SET_TASKS:
+    // ================ CREATE REQUEST ================= //
+    case ADD_TASK:
       return {
         ...state,
-        taskList: action.payload,
+        taskList: [...state.taskList, action.payload],
         requestStatus: {
           ...state.requestStatus,
-          isResolved: true,
+          isCreatePending: false,
+          isCreateFailed: false,
         },
       };
     case SET_TASKS_CREATE_REQUEST:
@@ -65,16 +83,7 @@ const taskReducer = (state = initialState, action) => {
           isCreateFailed: true,
         },
       };
-    case ADD_TASK:
-      return {
-        ...state,
-        taskList: [...state.taskList, action.payload],
-        requestStatus: {
-          ...state.requestStatus,
-          isCreatePending: false,
-          isCreateFailed: false,
-        },
-      };
+    // ================= UPDATE REQUEST ================ //
     case UPDATE_TASK: {
       const updatedTasks = state.taskList.map((task) =>
         task.id === action.id ? { ...task, ...action.data } : task,
@@ -106,11 +115,11 @@ const taskReducer = (state = initialState, action) => {
         },
       };
     }
+    // =================== DELETE REQUEST ================== //
     case DELETE_TASK: {
       const filteredTasks = state.taskList.filter(
         (task) => task.id !== action.payload,
       );
-
       return {
         ...state,
         taskList: filteredTasks,

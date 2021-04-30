@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { Button, CircularProgress } from '@material-ui/core';
 import useStyles from './style';
 
-const SubmitButton = ({ isLoading, disabled = false }) => {
+const SubmitButton = ({
+  isLoading,
+  disabled = false,
+  type = 'submit',
+  children,
+}) => {
   const classes = useStyles();
 
   if (isLoading)
@@ -11,14 +16,16 @@ const SubmitButton = ({ isLoading, disabled = false }) => {
 
   return (
     <Button
-      type="submit"
+      type={type}
       variant="outlined"
       fullWidth
-      className={classes.button}
       color="inherit"
       disabled={disabled}
+      className={`${classes.button} ${
+        type === 'submit' ? classes.buttonIsSubmit : classes.buttonIsReset
+      }`}
     >
-      Add
+      {children}
     </Button>
   );
 };
@@ -26,10 +33,13 @@ const SubmitButton = ({ isLoading, disabled = false }) => {
 SubmitButton.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   disabled: PropTypes.bool,
+  type: PropTypes.string,
+  children: PropTypes.string.isRequired,
 };
 
 SubmitButton.defaultProps = {
   disabled: false,
+  type: 'submit',
 };
 
 export default SubmitButton;

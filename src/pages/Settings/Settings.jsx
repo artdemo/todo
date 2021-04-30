@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Grid, List } from '@material-ui/core';
 import MainLoader from '../../components/Loaders/MainLoader';
 import FrameBox from '../../components/FrameBox';
-import Form from '../../components/Form';
 import Category from '../../components/Category';
 import TextControl from '../../components/TextControl';
 import IconSelect from '../../components/Selects/IconSelect';
@@ -104,28 +103,32 @@ const Settings = () => {
 
   return (
     <FrameBox>
-      <Form handleSubmit={handleCreateCategory}>
-        <Grid item xs={6}>
-          <TextControl
-            label="Category"
-            value={textControlValue}
-            handleChange={(e) => setTextControlValue(e.currentTarget.value)}
-            disabled={!availableIcons.length}
-          />
+      <form onSubmit={handleCreateCategory}>
+        <Grid container alignContent="center" spacing={2}>
+          <Grid item xs={6}>
+            <TextControl
+              label="Category"
+              value={textControlValue}
+              handleChange={(e) => setTextControlValue(e.currentTarget.value)}
+              disabled={!availableIcons.length}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            {iconSelect}
+          </Grid>
+          <Grid item xs={2}>
+            {colorSelect}
+          </Grid>
+          <Grid item xs={2}>
+            <SubmitButton
+              isLoading={isCreatePending}
+              disabled={!availableIcons.length}
+            >
+              Add
+            </SubmitButton>
+          </Grid>
         </Grid>
-        <Grid item xs={2}>
-          {iconSelect}
-        </Grid>
-        <Grid item xs={2}>
-          {colorSelect}
-        </Grid>
-        <Grid item xs={2}>
-          <SubmitButton
-            isLoading={isCreatePending}
-            disabled={!availableIcons.length}
-          />
-        </Grid>
-      </Form>
+      </form>
       <List>{categoryToRender}</List>
     </FrameBox>
   );

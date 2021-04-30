@@ -13,21 +13,23 @@ const Completed = () => {
     taskList,
   } = useCompletedHook();
 
-  if (!isTasksResolved || !isCategoriesResolved) return <MainLoader />;
+  if (isTasksResolved === null || isCategoriesResolved === null)
+    return <MainLoader />;
 
   return (
     <FrameBox>
       <List>
         {taskList.map(
-          ({ id, text, isCompleted, isFavorite, categoryId, color }) => (
+          ({ id, name, isCompleted, isFavorite, categoryId, color, date }) => (
             <ItemBox key={id}>
               <Task
                 id={id}
-                text={text}
+                name={name}
                 isCompleted={isCompleted}
                 isFavorite={isFavorite}
                 categoryId={categoryId}
                 color={color}
+                date={date}
               />
             </ItemBox>
           ),

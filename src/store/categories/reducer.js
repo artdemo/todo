@@ -2,7 +2,7 @@ import {
   SET_CATEGORIES,
   ADD_CATEGORY,
   DELETE_CATEGORY,
-  SET_CATEGORIES_GET_REQUEST,
+  // SET_CATEGORIES_GET_REQUEST,
   SET_CATEGORIES_GET_ERROR,
   SET_CATEGORIES_CREATE_REQUEST,
   SET_CATEGORIES_CREATE_ERROR,
@@ -14,7 +14,7 @@ import {
 const initialState = {
   categoryList: [],
   requestStatus: {
-    isResolved: false,
+    isResolved: null,
     isCreatePending: false,
     isCreateFailed: null,
     pendingCategories: [],
@@ -23,19 +23,19 @@ const initialState = {
 
 const categoryReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_CATEGORIES_GET_REQUEST:
-      return {
-        ...state,
-        requestStatus: {
-          ...state.requestStatus,
-        },
-      };
+    // case SET_CATEGORIES_GET_REQUEST:
+    //   return {
+    //     ...state,
+    //     requestStatus: {
+    //       ...state.requestStatus,
+    //     },
+    //   };
     case SET_CATEGORIES_GET_ERROR:
       return {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isResolved: true,
+          isResolved: false,
         },
       };
     case SET_CATEGORIES:
