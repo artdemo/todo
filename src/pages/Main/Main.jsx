@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { format } from 'date-fns';
 import { Grid, List } from '@material-ui/core';
 import FrameBox from '../../components/FrameBox';
-import Form from '../../components/Form';
 import TextControl from '../../components/TextControl';
 import SubmitButton from '../../components/Buttons/SubmitButton';
 import CategorySelect from '../../components/Selects/CategorySelect';
@@ -34,15 +34,16 @@ const Main = () => {
   const tasksToRender = useMemo(
     () =>
       taskList.map(
-        ({ id, text, isCompleted, isFavorite, categoryId, color }) => (
+        ({ id, name, isCompleted, isFavorite, categoryId, color, date }) => (
           <ItemBox key={id}>
             <Task
               id={id}
-              text={text}
+              name={name}
               isCompleted={isCompleted}
               isFavorite={isFavorite}
               categoryId={categoryId}
               color={color}
+              date={date}
             />
           </ItemBox>
         ),
@@ -61,7 +62,8 @@ const Main = () => {
     [categoryListFlat, selectedCategoryIndex],
   );
 
-  if (!isTasksResolved || !isCategoriesResolved) return <MainLoader />;
+  if (isTasksResolved === null || isCategoriesResolved === null)
+    return <MainLoader />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,31 +73,34 @@ const Main = () => {
     const { id: categoryId, color } = categoryListFlat[selectedCategoryIndex];
 
     createTask({
-      text: textControlValue.trim(),
+      name: textControlValue.trim(),
       isCompleted: false,
       isFavorite: false,
       categoryId,
       color,
+      date: format(new Date(), 'yyyy-MM-dd'),
     });
   };
 
   return (
     <FrameBox>
-      <Form handleSubmit={handleSubmit}>
-        <Grid item xs={7}>
-          <TextControl
-            label="Task"
-            value={textControlValue}
-            handleChange={(e) => setTextControlValue(e.currentTarget.value)}
-          />
+      <form onSubmit={handleSubmit}>
+        <Grid container alignContent="center" spacing={2}>
+          <Grid item xs={7}>
+            <TextControl
+              label="Task"
+              value={textControlValue}
+              handleChange={(e) => setTextControlValue(e.currentTarget.value)}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            {categorySelect}
+          </Grid>
+          <Grid item xs={3}>
+            <SubmitButton isLoading={isCreatePending}>Add</SubmitButton>
+          </Grid>
         </Grid>
-        <Grid item xs={2}>
-          {categorySelect}
-        </Grid>
-        <Grid item xs={3}>
-          <SubmitButton isLoading={isCreatePending} />
-        </Grid>
-      </Form>
+      </form>
       <List>{tasksToRender}</List>
     </FrameBox>
   );

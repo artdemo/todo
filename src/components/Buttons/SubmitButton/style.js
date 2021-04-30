@@ -6,8 +6,15 @@ const useStyles = makeStyles({
     margin: 'auto',
   },
   button: {
+    height: 40,
+  },
+
+  buttonIsSubmit: {
     color: 'green',
-    height: '100%',
+  },
+
+  buttonIsReset: {
+    color: '#f50057',
   },
 });
 

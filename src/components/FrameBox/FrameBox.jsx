@@ -7,7 +7,7 @@ const FrameBox = ({ children }) => {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className={classes.container}>
       <Paper elevation={3} className={classes.paper}>
         {children}
       </Paper>

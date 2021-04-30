@@ -24,7 +24,7 @@ export const getCategories = () => (dispatch, getState) => {
   // If data was already requested from the server take it from the store
   if (categoryReducer.requestStatus.isResolved) return;
 
-  console.log('Get categories');
+  // console.log('Get categories');
 
   dispatch({
     type: SET_CATEGORIES_GET_REQUEST,

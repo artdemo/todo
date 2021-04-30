@@ -18,8 +18,6 @@ import DeleteButton from '../Buttons/DeleteButton';
 const Category = ({ id, name, icon, colors, isDefault }) => {
   const classes = useStyles();
 
-  console.log('Category');
-
   const {
     isDeletePending,
     removeCategory,

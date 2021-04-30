@@ -3,12 +3,12 @@ import {
   ADD_TASK,
   UPDATE_TASK,
   DELETE_TASK,
-  SET_TASKS_GET_REQUEST,
   SET_TASKS_GET_ERROR,
   SET_TASKS_CREATE_REQUEST,
   SET_TASKS_CREATE_ERROR,
   SET_TASKS_MODIFY_START,
   SET_TASKS_MODIFY_FINISH,
+  SET_TASKS_SORT_REQUEST,
 } from './types';
 import {
   getAllTasks,
@@ -16,24 +16,29 @@ import {
   patchTask,
   deleteTask,
 } from '../../utils/api/methods';
+import { turnObjectToQuery } from '../../utils/helpers';
 
-export const getTasks = () => (dispatch, getState) => {
+export const getTasks = (nextSortObj) => (dispatch, getState) => {
   const { taskReducer } = getState();
+  const prevSortObj = taskReducer.resolvedSortState;
 
-  // If data was already requested from the server take it from the store
-  if (taskReducer.requestStatus.isResolved) return;
+  // No need to fetch same data
+  if (JSON.stringify(nextSortObj) === JSON.stringify(prevSortObj)) return;
 
   console.log('Get tasks');
 
-  dispatch({
-    type: SET_TASKS_GET_REQUEST,
-  });
+  dispatch({ type: SET_TASKS_SORT_REQUEST });
 
-  getAllTasks()
+  const params = turnObjectToQuery(nextSortObj, '_sort', false);
+
+  getAllTasks(params)
     .then((response) => {
       dispatch({
         type: SET_TASKS,
-        payload: response.data,
+        payload: {
+          taskList: response.data,
+          nextSortObj,
+        },
       });
     })
     .catch(() => {
