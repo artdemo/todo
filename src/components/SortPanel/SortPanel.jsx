@@ -1,11 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, FormControlLabel, Switch } from '@material-ui/core';
+/*eslint-disable*/
+
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  Grid,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  FormGroup,
+  Switch,
+  Checkbox,
+  List,
+} from '@material-ui/core';
 import SubmitButton from '../Buttons/SubmitButton';
 import FrameBox from '../FrameBox';
 import useSortPanelHook from '../../hooks/useSortPanelHook';
 
 const SortPanel = () => {
-  const { getTasks, resolvedSortState, isSortPending } = useSortPanelHook();
+  const {
+    getTasks,
+    resolvedSortState,
+    isSortPending,
+    categoryList,
+  } = useSortPanelHook();
+
+  console.log(categoryList);
 
   const [switchersState, setSwitchersState] = useState({
     date: false,
@@ -26,33 +44,55 @@ const SortPanel = () => {
     getTasks(switchersState);
   };
 
+  const categoryFieldset = categoryList.map(({ id, name }) => (
+    <FormControlLabel
+      key={`${id}-${name}`}
+      control={
+        <Checkbox checked={() => false} onChange={() => false} name={name} />
+      }
+      label={name}
+    />
+  ));
+
+  // const list = categoryList.map(({ id, name }) => <div>{name}</div>);
+
   return (
     <FrameBox>
       <form onSubmit={handleSubmit}>
         <Grid container alignContent="center" spacing={2}>
-          <Grid item xs={3}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={switchersState.date}
-                  onChange={handleChange}
-                  name="date"
+          <Grid item xs={4}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Sort</FormLabel>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={switchersState.date}
+                      onChange={handleChange}
+                      name="date"
+                    />
+                  }
+                  label="Date"
                 />
-              }
-              label="Date"
-            />
+
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={switchersState.name}
+                      onChange={handleChange}
+                      name="name"
+                    />
+                  }
+                  label="Name"
+                />
+              </FormGroup>
+            </FormControl>
           </Grid>
-          <Grid item xs={6}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={switchersState.name}
-                  onChange={handleChange}
-                  name="name"
-                />
-              }
-              label="Name"
-            />
+          <Grid item xs={5}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Choose category</FormLabel>
+              <FormGroup>{categoryFieldset}</FormGroup>
+            </FormControl>
           </Grid>
           <Grid item xs={3}>
             <SubmitButton
