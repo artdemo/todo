@@ -1,43 +1,61 @@
+import qs from 'query-string';
+
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getTasks as getTasksAction } from '../store/tasks/actions';
-import { turnQueryToObject, turnObjectToQuery } from '../utils/helpers';
+
+import {
+  isSortPendingSelector,
+  usedColorsSelector,
+  queryParamsSelector,
+  sortObjSelector,
+  isResolvedSelector,
+  filterColorArraySelector,
+  filterCategoryArraySelector,
+} from '../store/tasks/selectors';
+import { categoryListAmountSelector } from '../store/categories/selectors';
 
 export default () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const history = useHistory();
+  const location = useLocation();
+  const { search } = location;
 
-  const isSortPending = useSelector(
-    ({ taskReducer }) => taskReducer.requestStatus.isSortPending,
-  );
-  const resolvedSortState = useSelector(
-    ({ taskReducer }) => taskReducer.resolvedSortState,
-  );
-  const getTasks = (nextSortObj) => dispatch(getTasksAction(nextSortObj));
+  const isSortPending = useSelector(isSortPendingSelector);
+  const categoryListAmount = useSelector(categoryListAmountSelector);
+  const usedColorsObj = useSelector(usedColorsSelector);
+  const queryParams = useSelector(queryParamsSelector);
+  const isResolved = useSelector(isResolvedSelector);
+  const sortObj = useSelector(sortObjSelector);
 
-  // Take sort object from url
+  const filterColorArray = useSelector(filterColorArraySelector);
+  const filterCategoryArray = useSelector(filterCategoryArraySelector);
+
+  const getTasks = (params) => dispatch(getTasksAction(params));
+
   useEffect(() => {
-    const { search } = location;
-    const locationSearch = new URLSearchParams(search);
-    const query = locationSearch.getAll('_sort');
+    // If it's the first request, take sort object from url
+    if (isResolved === null) {
+      const params = qs.parse(search);
+      getTasks(params);
 
-    const sortObj = turnQueryToObject(query, { date: false, name: false });
+      return;
+    }
 
-    getTasks(sortObj);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Insert sort object into url
-  useEffect(() => {
-    const query = turnObjectToQuery(resolvedSortState, '_sort');
+    const query = qs.stringify(queryParams, { skipEmptyString: true });
 
     history.replace({ search: query });
-  }, [resolvedSortState, history, location.pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryParams, location.pathname]);
 
   return {
     isSortPending,
-    resolvedSortState,
+    filterCategoryArray,
+    filterColorArray,
+    sortObj,
+    categoryListAmount,
+    usedColorsObj,
     getTasks,
   };
 };

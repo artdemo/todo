@@ -13,7 +13,11 @@ import {
 
 const initialState = {
   taskList: [],
-  resolvedSortState: {},
+  queryParams: {
+    _sort: '',
+    categoryId: [],
+    color: [],
+  },
   requestStatus: {
     isCreatePending: false,
     isCreateFailed: null,
@@ -30,7 +34,7 @@ const taskReducer = (state = initialState, action) => {
       return {
         ...state,
         taskList: action.payload.taskList,
-        resolvedSortState: action.payload.nextSortObj,
+        queryParams: { ...state.queryParams, ...action.payload.params },
         requestStatus: {
           ...state.requestStatus,
           isResolved: true,

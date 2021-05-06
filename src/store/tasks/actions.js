@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import {
   SET_TASKS,
   ADD_TASK,
@@ -16,20 +17,11 @@ import {
   patchTask,
   deleteTask,
 } from '../../utils/api/methods';
-import { turnObjectToQuery } from '../../utils/helpers';
 
-export const getTasks = (nextSortObj) => (dispatch, getState) => {
-  const { taskReducer } = getState();
-  const prevSortObj = taskReducer.resolvedSortState;
-
-  // No need to fetch same data
-  if (JSON.stringify(nextSortObj) === JSON.stringify(prevSortObj)) return;
-
+export const getTasks = (params) => (dispatch, getState) => {
   console.log('Get tasks');
 
   dispatch({ type: SET_TASKS_SORT_REQUEST });
-
-  const params = turnObjectToQuery(nextSortObj, '_sort', false);
 
   getAllTasks(params)
     .then((response) => {
@@ -37,7 +29,7 @@ export const getTasks = (nextSortObj) => (dispatch, getState) => {
         type: SET_TASKS,
         payload: {
           taskList: response.data,
-          nextSortObj,
+          params,
         },
       });
     })
