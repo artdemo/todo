@@ -9,7 +9,7 @@ export const iconListSelector = createSelector(
   (categoryList) => {
     // Get all icons and colors from json
     const { icons: setIcons, colors } = set;
-    // Get all ocuppied icons from created categories
+    // Get all occupied icons from created categories
     const occupiedIcons = categoryList.map((category) => category.icon);
     // Return icons which are not occupied by the created categories
     const availableIcons = setIcons.filter(
@@ -36,6 +36,17 @@ export const categoryListFlatSelector = createSelector(
 
     return categoryListFlat;
   },
+);
+
+export const categoryListAmountSelector = createSelector(
+  ({ categoryReducer }) => categoryReducer.categoryList,
+  ({ taskReducer }) => taskReducer.taskList,
+  (categoryList, taskList) =>
+    categoryList.map(({ id, name, icon }) => {
+      const tasks = taskList.filter(({ categoryId }) => categoryId === id);
+
+      return { id: id.toString(), name, icon, taskAmount: tasks.length };
+    }),
 );
 
 export const isResolvedSelector = ({ categoryReducer }) =>
