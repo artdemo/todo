@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Grid, FormControl, FormLabel, FormGroup } from '@material-ui/core';
 import useSortPanelHook from '../../hooks/useSortPanelHook';
 import { compareObjects, compareArrays } from '../../utils/helpers';
-import { Grid, FormControl, FormLabel, FormGroup } from '@material-ui/core';
 import SubmitButton from '../Buttons/SubmitButton';
 import CategoryCheckbox from './CategoryCheckbox';
 import ColorCheckbox from './ColorCheckbox';

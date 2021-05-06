@@ -1,14 +1,10 @@
-/*eslint-disable*/
-
 import React from 'react';
 import { withRouter, Route, Redirect, Switch, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Tabs,
   Tab,
-  AppBar,
   Drawer,
-  Typography,
   Hidden,
   CssBaseline,
   Divider,
@@ -17,8 +13,8 @@ import Main from '../../pages/Main';
 import Completed from '../../pages/Completed';
 import Settings from '../../pages/Settings';
 import Error from '../../pages/Error';
-import useStyles from './style';
 import SortPanel from '../SortPanel';
+import useStyles from './style';
 
 const App = ({ location }) => {
   const classes = useStyles();
@@ -67,10 +63,11 @@ const App = ({ location }) => {
             />
           </Tabs>
           <Divider />
-          <SortPanel />
+          {(location.pathname === '/main' ||
+            location.pathname === '/completed') && <SortPanel />}
         </Drawer>
       </Hidden>
-      <main className="mainContent" className={classes.main}>
+      <main className={`${classes.main} mainContent`}>
         <Switch>
           <Route exact path="/">
             <Redirect to="/completed" />
