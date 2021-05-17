@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import useCategoryRequestHook from './useCategoryRequestHook';
+import useDefaultCategoryIdRequestHook from './useDefaultCategoryIdRequestHook';
 import {
   iconListSelector,
   isCreatePendingSelector,
@@ -11,12 +12,16 @@ import { createCategory as createCategoryAction } from '../store/categories/acti
 export default () => {
   const dispatch = useDispatch();
 
+  const { isResolved: isCategoryResolved } = useCategoryRequestHook();
+
+  const {
+    isResolved: isDefaultCategoryIdResolved,
+  } = useDefaultCategoryIdRequestHook();
+
   const categoryList = useSelector(categoryListSelector);
   const isCreatePending = useSelector(isCreatePendingSelector);
   const isCreateFailed = useSelector(isCreateFailedSelector);
   const { availableIcons, colors } = useSelector(iconListSelector);
-
-  const isResolved = useCategoryRequestHook();
 
   const createCategory = (category) => dispatch(createCategoryAction(category));
 
@@ -26,7 +31,7 @@ export default () => {
     colors,
     isCreatePending,
     isCreateFailed,
+    isResolved: isCategoryResolved && isDefaultCategoryIdResolved,
     createCategory,
-    isResolved,
   };
 };

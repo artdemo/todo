@@ -4,7 +4,7 @@ import { Button, CircularProgress } from '@material-ui/core';
 import useStyles from './style';
 
 const SubmitButton = ({
-  isLoading,
+  isLoading = false,
   disabled = false,
   type = 'submit',
   children,
@@ -31,7 +31,7 @@ const SubmitButton = ({
 };
 
 SubmitButton.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
   disabled: PropTypes.bool,
   type: PropTypes.string,
   children: PropTypes.string.isRequired,
@@ -40,6 +40,7 @@ SubmitButton.propTypes = {
 SubmitButton.defaultProps = {
   disabled: false,
   type: 'submit',
+  isLoading: false,
 };
 
 export default SubmitButton;

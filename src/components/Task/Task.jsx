@@ -4,9 +4,9 @@ import { TextField, Checkbox, Grid, Typography } from '@material-ui/core';
 import FavoriteButton from '../Buttons/FavoriteButton';
 import DeleteButton from '../Buttons/DeleteButton';
 import ItemLoader from '../Loaders/ItemLoader';
+import Icon from '../Icon';
 import useStyles from './style';
 import useTaskHook from '../../hooks/useTaskHook';
-import Icon from '../Icon';
 
 const Task = ({
   id,
@@ -19,20 +19,12 @@ const Task = ({
 }) => {
   const classes = useStyles();
 
-  const { isModifyPending, updateTask, removeTask, icon } = useTaskHook(
+  const { icon, isPending, removeTask, updateTask } = useTaskHook(
     id,
     categoryId,
   );
 
   const [textValue, setTextValue] = useState(name);
-
-  const handleCheckChange = (e) => {
-    const dataToUpdate = { isCompleted: e.currentTarget.checked };
-    // Reset isFavorite prop after task has been marked as completed
-    if (isFavorite) dataToUpdate.isFavorite = false;
-
-    updateTask(id, dataToUpdate);
-  };
 
   const handleTextChange = (e) => {
     // Edit task only on the Main page
@@ -54,17 +46,22 @@ const Task = ({
   };
 
   return (
-    <>
-      <ItemLoader isVisible={isModifyPending} />
+    <div className={classes.wrapper}>
+      <ItemLoader isVisible={isPending} />
       <form
-        className={`${classes.form} ${isModifyPending && classes.hidden}`}
+        className={`${classes.form} ${isPending && classes.hidden}`}
         onSubmit={handleSubmit}
       >
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
             <Checkbox
               checked={isCompleted}
-              onChange={handleCheckChange}
+              onChange={(e) =>
+                updateTask(id, {
+                  isCompleted: e.currentTarget.checked,
+                  isFavorite: false,
+                })
+              }
               className={classes.checkbox}
             />
           </Grid>
@@ -99,7 +96,7 @@ const Task = ({
           </Grid>
         </Grid>
       </form>
-    </>
+    </div>
   );
 };
 

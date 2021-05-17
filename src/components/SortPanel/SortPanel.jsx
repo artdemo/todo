@@ -1,46 +1,46 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Grid, FormControl, FormLabel, FormGroup } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
 import useSortPanelHook from '../../hooks/useSortPanelHook';
-import { compareObjects, compareArrays } from '../../utils/helpers';
 import SubmitButton from '../Buttons/SubmitButton';
-import CategoryCheckbox from './CategoryCheckbox';
-import ColorCheckbox from './ColorCheckbox';
-import SortSwitch from './SortSwitch';
+import SortSwitchGroup from './SortSwitchGroup';
+import CategoryCheckboxGroup from './CategoryCheckboxGroup';
+import ColorCheckboxGroup from './ColorCheckboxGroup';
+import { compareObjects, compareArrays } from '../../utils/helpers';
 import useStyles from './style';
 
 const SortPanel = () => {
   const classes = useStyles();
 
   const {
-    getTasks,
+    setParams,
     sortObj,
     filterCategoryArray,
     filterColorArray,
-    isSortPending,
-    categoryListAmount,
+    categoryListTaskCount,
     usedColorsObj,
   } = useSortPanelHook();
 
+  // ====================== SORT SWITCH GROUP ====================== //
   const [switchersState, setSwitchersState] = useState({
     date: false,
     name: false,
   });
-  const [filterCategoryState, setFilterCategoryState] = useState([]);
-  const [filterColorState, setFilterColorState] = useState([]);
 
   useEffect(() => {
     setSwitchersState((prevState) => ({ ...prevState, ...sortObj }));
   }, [sortObj]);
 
+  const handleSortChange = (e) => {
+    setSwitchersState({ ...switchersState, [e.target.name]: e.target.checked });
+  };
+
+  // ==================== CATEGORY FILTER GROUP  =================== //
+  const [filterCategoryState, setFilterCategoryState] = useState([]);
+
   useEffect(() => {
     setFilterCategoryState(filterCategoryArray);
   }, [filterCategoryArray]);
 
-  useEffect(() => {
-    setFilterColorState(filterColorArray);
-  }, [filterColorArray]);
-
-  // ==================== CATEGORY FILTER LIST ================== //
   const handleFilterCategoryCheck = (id) => {
     if (!filterCategoryState.includes(id)) {
       setFilterCategoryState([...filterCategoryState, id]);
@@ -52,24 +52,13 @@ const SortPanel = () => {
     );
   };
 
-  const categoryCheckboxList = useMemo(
-    () =>
-      categoryListAmount.map(({ id, name, icon, taskAmount }) => (
-        <CategoryCheckbox
-          id={id}
-          name={name}
-          icon={icon}
-          taskAmount={taskAmount}
-          isChecked={filterCategoryState.includes(id)}
-          handleChange={handleFilterCategoryCheck}
-          key={`${name}-${id}`}
-        />
-      )),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [categoryListAmount, filterCategoryState],
-  );
+  // ====================== COLOR FILTER GROUP ==================== //
+  const [filterColorState, setFilterColorState] = useState([]);
 
-  // ====================== COLOR FILTER LIST ==================== //
+  useEffect(() => {
+    setFilterColorState(filterColorArray);
+  }, [filterColorArray]);
+
   const handleFilterColorCheck = (color) => {
     if (!filterColorState.includes(color)) {
       setFilterColorState([...filterColorState, color]);
@@ -81,40 +70,6 @@ const SortPanel = () => {
     );
   };
 
-  const colorCheckboxList = useMemo(
-    () =>
-      Object.entries(usedColorsObj).map(([color, taskAmount]) => (
-        <ColorCheckbox
-          color={color}
-          taskAmount={taskAmount}
-          isChecked={filterColorState.includes(color)}
-          handleChange={handleFilterColorCheck}
-          key={color}
-        />
-      )),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [usedColorsObj, filterColorState],
-  );
-
-  // ====================== SORT SWITCH LIST ====================== //
-  const handleSortChange = (e) => {
-    setSwitchersState({ ...switchersState, [e.target.name]: e.target.checked });
-  };
-
-  const switchList = useMemo(
-    () =>
-      Object.keys(sortObj).map((name) => (
-        <SortSwitch
-          name={name}
-          isChecked={switchersState[name]}
-          handleChange={handleSortChange}
-          key={name}
-        />
-      )),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sortObj, switchersState],
-  );
-
   // ======================== SORT PANEL ======================== //
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -123,10 +78,12 @@ const SortPanel = () => {
       .filter((key) => switchersState[key] && key)
       .join(',');
 
-    getTasks({
+    setParams({
       _sort: sortString,
       categoryId: filterCategoryState,
       color: filterColorState,
+      // _page: 1,
+      _start: 0,
     });
   };
 
@@ -139,29 +96,28 @@ const SortPanel = () => {
     <form onSubmit={handleSubmit} className={classes.form}>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Sort</FormLabel>
-            <FormGroup>{switchList}</FormGroup>
-          </FormControl>
+          <SortSwitchGroup
+            list={Object.keys(sortObj)}
+            checkedList={switchersState}
+            handleChange={handleSortChange}
+          />
         </Grid>
         <Grid item>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Filter by category</FormLabel>
-            <FormGroup>{categoryCheckboxList}</FormGroup>
-          </FormControl>
+          <CategoryCheckboxGroup
+            list={categoryListTaskCount}
+            checkedList={filterCategoryState}
+            handleChange={handleFilterCategoryCheck}
+          />
         </Grid>
         <Grid item>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Filter by color</FormLabel>
-            <FormGroup className={classes.colorGroup}>
-              {colorCheckboxList}
-            </FormGroup>
-          </FormControl>
+          <ColorCheckboxGroup
+            list={Object.entries(usedColorsObj)}
+            checkedList={filterColorState}
+            handleChange={handleFilterColorCheck}
+          />
         </Grid>
         <Grid item>
-          <SubmitButton isLoading={isSortPending} disabled={isFilterMatched()}>
-            Apply
-          </SubmitButton>
+          <SubmitButton disabled={isFilterMatched()}>Apply</SubmitButton>
         </Grid>
       </Grid>
     </form>

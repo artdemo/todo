@@ -9,35 +9,44 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
-import useCategoryHook from '../../hooks/useCategoryHook';
 import useStyles from './style';
 import Icon from '../Icon';
 import ItemLoader from '../Loaders/ItemLoader';
 import DeleteButton from '../Buttons/DeleteButton';
+import useCategoryHook from '../../hooks/useCategoryHook';
 
-const Category = ({ id, name, icon, colors, isDefault }) => {
+const Category = ({ id, name, icon, colors }) => {
   const classes = useStyles();
 
   const {
+    isDefault,
     isDeletePending,
+    isSetDefaultPending,
     removeCategory,
-    markCategoryDefault,
+    setDefaultCategoryId,
   } = useCategoryHook(id);
-
-  const handleMarkDefault = () => {
-    markCategoryDefault(id);
-  };
 
   return (
     <>
-      <ItemLoader isVisible={isDeletePending} />
-      <ListItemIcon className={`${isDeletePending && classes.hidden}`}>
-        <IconButton onClick={handleMarkDefault} disabled={isDefault}>
+      <ItemLoader isVisible={isDeletePending || isSetDefaultPending} />
+      <ListItemIcon
+        className={`${
+          (isDeletePending || isSetDefaultPending) && classes.hidden
+        }`}
+      >
+        <IconButton
+          onClick={() => {
+            setDefaultCategoryId(id);
+          }}
+          disabled={isDefault}
+        >
           <Icon iconName={icon} />
         </IconButton>
       </ListItemIcon>
       <ListItemText
-        className={`${isDeletePending && classes.hidden}`}
+        className={`${
+          (isDeletePending || isSetDefaultPending) && classes.hidden
+        }`}
         primary={
           <Box className={classes.titleWrapper}>
             <Typography variant="h6" className={classes.titleHeader}>
@@ -61,7 +70,7 @@ const Category = ({ id, name, icon, colors, isDefault }) => {
       />
       <ListItemSecondaryAction
         className={`${classes.deleteButton} ${
-          isDeletePending && classes.hidden
+          (isDeletePending || isSetDefaultPending) && classes.hidden
         }`}
       >
         <DeleteButton
@@ -78,7 +87,6 @@ Category.propTypes = {
   name: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   colors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isDefault: PropTypes.bool.isRequired,
 };
 
 export default Category;

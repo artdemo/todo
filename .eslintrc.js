@@ -11,5 +11,13 @@ module.exports = {
   },
   plugins: ['import', 'jsx-a11y', 'react', 'react-hooks'],
   extends: ['eslint:recommended', 'airbnb', 'airbnb/hooks', 'prettier'],
-  rules: { 'react/prop-types': 'error', 'no-shadow': 'off' },
+  rules: {
+    'react/prop-types': 'error',
+    'no-shadow': 'off',
+    'no-underscore-dangle': [
+      2,
+      { allow: ['_sort', '_start', '_limit', '_order'] },
+    ],
+    'react-hooks/exhaustive-deps': 'off',
+  },
 };

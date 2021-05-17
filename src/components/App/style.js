@@ -1,12 +1,9 @@
-/*eslint-disable*/
-
 import { makeStyles } from '@material-ui/core/styles';
 
-const drawerWidth = 250;
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
+    margin: 'auto',
   },
 
   main: {
@@ -14,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   drawer: {
-    width: drawerWidth,
+    width: 250,
   },
 
   tabs: {
@@ -22,17 +19,6 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'flex-start',
     },
   },
-
-  progress: {
-    position: 'fixed',
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
-
-  bar: {
-    marginBottom: 50,
-  },
-}));
+});
 
 export default useStyles;

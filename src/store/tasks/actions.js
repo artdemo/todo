@@ -1,39 +1,44 @@
-/*eslint-disable*/
 import {
   SET_TASKS,
   ADD_TASK,
+  ADD_PAGE,
   UPDATE_TASK,
   DELETE_TASK,
   SET_TASKS_GET_ERROR,
   SET_TASKS_CREATE_REQUEST,
   SET_TASKS_CREATE_ERROR,
-  SET_TASKS_MODIFY_START,
-  SET_TASKS_MODIFY_FINISH,
-  SET_TASKS_SORT_REQUEST,
+  SET_TASK_PENDING_STATUS,
+  RESET_TASK_PENDING_STATUS,
+  SET_PARAMS,
 } from './types';
 import {
-  getAllTasks,
+  getTasks as getTasksRequest,
   postNewTask,
   patchTask,
   deleteTask,
 } from '../../utils/api/methods';
 
-export const getTasks = (params) => (dispatch, getState) => {
-  console.log('Get tasks');
+export const getTasks = () => (dispatch, getState) => {
+  const { taskReducer } = getState();
+  const { queryParams } = taskReducer;
 
-  dispatch({ type: SET_TASKS_SORT_REQUEST });
+  console.log('Get Task');
 
-  getAllTasks(params)
+  getTasksRequest(queryParams)
     .then((response) => {
+      if (!response) return;
+
+      const totalCount = response.headers['x-total-count'];
+
       dispatch({
         type: SET_TASKS,
-        payload: {
-          taskList: response.data,
-          params,
-        },
+        payload: { taskList: response.data, totalCount },
+        taskList: response.data,
+        totalCount,
       });
     })
-    .catch(() => {
+    .catch((e) => {
+      console.log(e);
       dispatch({
         type: SET_TASKS_GET_ERROR,
       });
@@ -46,10 +51,10 @@ export const createTask = (task) => (dispatch) => {
   });
 
   postNewTask(task)
-    .then((response) => {
+    .then(({ data }) => {
       dispatch({
         type: ADD_TASK,
-        payload: response.data,
+        data,
       });
     })
     .catch(() => {
@@ -61,8 +66,8 @@ export const createTask = (task) => (dispatch) => {
 
 export const updateTask = (id, data) => (dispatch) => {
   dispatch({
-    type: SET_TASKS_MODIFY_START,
-    payload: id,
+    type: SET_TASK_PENDING_STATUS,
+    id,
   });
 
   return patchTask(id, data)
@@ -79,29 +84,36 @@ export const updateTask = (id, data) => (dispatch) => {
     })
     .finally(() => {
       dispatch({
-        type: SET_TASKS_MODIFY_FINISH,
-        payload: id,
+        type: RESET_TASK_PENDING_STATUS,
+        id,
       });
     });
 };
 
 export const removeTask = (id) => (dispatch) => {
   dispatch({
-    type: SET_TASKS_MODIFY_START,
-    payload: id,
+    type: SET_TASK_PENDING_STATUS,
+    id,
   });
 
   deleteTask(id)
     .then(() => {
       dispatch({
         type: DELETE_TASK,
-        payload: id,
+        id,
       });
     })
     .finally(() => {
       dispatch({
-        type: SET_TASKS_MODIFY_FINISH,
-        payload: id,
+        type: RESET_TASK_PENDING_STATUS,
+        id,
       });
     });
 };
+
+export const setParams = (params) => ({
+  type: SET_PARAMS,
+  params,
+});
+
+export const addPage = { type: ADD_PAGE };

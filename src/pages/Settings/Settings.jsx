@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Grid, List } from '@material-ui/core';
+import { Grid, List, ListItem, TextField } from '@material-ui/core';
 import MainLoader from '../../components/Loaders/MainLoader';
 import FrameBox from '../../components/FrameBox';
 import Category from '../../components/Category';
-import TextControl from '../../components/TextControl';
 import IconSelect from '../../components/Selects/IconSelect';
 import SubmitButton from '../../components/Buttons/SubmitButton';
 import ColorSelect from '../../components/Selects/ColorSelect';
-import ItemBox from '../../components/ItemBox';
 import useSettingsHook from '../../hooks/useSettingsHook';
 
 const Settings = () => {
   const {
-    availableIcons,
     colors,
+    categoryList,
+    availableIcons,
     isCreatePending,
     isCreateFailed,
-    createCategory,
-    categoryList,
     isResolved,
+    createCategory,
   } = useSettingsHook();
 
   const [textControlValue, setTextControlValue] = useState('');
@@ -32,23 +30,24 @@ const Settings = () => {
     setTextControlValue('');
   }, [isCreateFailed]);
 
+  // ==================== CATEGORY LIST ===================== //
   const categoryToRender = useMemo(
     () =>
-      categoryList.map(({ id, name, icon, colors, isDefault }) => (
-        <ItemBox key={id}>
+      categoryList.map(({ id, name, icon, colors }) => (
+        <ListItem key={id} disableGutters>
           <Category
             id={id}
             name={name}
             icon={icon}
             colors={colors}
-            isDefault={isDefault}
             key={`${name}-${id}`}
           />
-        </ItemBox>
+        </ListItem>
       )),
     [categoryList],
   );
 
+  // ==================== COLOR SELECT ===================== //
   const colorSelect = useMemo(
     () => (
       <ColorSelect
@@ -61,6 +60,7 @@ const Settings = () => {
     [availableIcons, colors, selectedColors],
   );
 
+  // ==================== ICON SELECT ===================== //
   const iconSelect = useMemo(
     () => (
       <IconSelect
@@ -72,6 +72,10 @@ const Settings = () => {
     [availableIcons, iconIndex],
   );
 
+  // ==================== MAIN LOADER ==================== //
+  if (!isResolved) return <MainLoader />;
+
+  // =================== SETTINGS PAGE =================== //
   const handleCreateCategory = (e) => {
     e.preventDefault();
 
@@ -88,28 +92,28 @@ const Settings = () => {
       alert('One of the fields is empty');
       return;
     }
-    // If it's the first created category, set it as default category
-    const isDefault = !categoryList.length;
 
     createCategory({
       name: textControlValue.trim(),
       icon: availableIcons[iconIndex],
       colors: selectedColors,
-      isDefault,
     });
   };
-
-  if (!isResolved) return <MainLoader />;
 
   return (
     <FrameBox>
       <form onSubmit={handleCreateCategory}>
         <Grid container alignContent="center" spacing={2}>
           <Grid item xs={6}>
-            <TextControl
+            <TextField
+              variant="outlined"
+              margin="none"
+              size="small"
+              fullWidth
+              autoFocus
               label="Category"
               value={textControlValue}
-              handleChange={(e) => setTextControlValue(e.currentTarget.value)}
+              onChange={(e) => setTextControlValue(e.currentTarget.value)}
               disabled={!availableIcons.length}
             />
           </Grid>

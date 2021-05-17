@@ -1,44 +1,34 @@
 import {
   SET_CATEGORIES,
-  SET_CATEGORIES_GET_REQUEST,
   SET_CATEGORIES_GET_ERROR,
   ADD_CATEGORY,
   DELETE_CATEGORY,
-  SET_CATEGORIES_CREATE_REQUEST,
-  SET_CATEGORIES_CREATE_ERROR,
-  SET_CATEGORIES_DELETE_REQUEST,
-  SET_CATEGORIES_DELETE_ERROR,
-  SET_DEFAULT,
+  SET_CATEGORY_CREATE_REQUEST,
+  SET_CATEGORY_CREATE_ERROR,
+  SET_CATEGORY_PENDING_STATUS,
+  RESET_CATEGORY_PENDING_STATUS,
 } from './types';
 import {
-  getAllCategories,
-  postNewCategory,
+  getCategories as getCategoriesRequest,
+  postCategory,
   deleteCategory,
-  patchCategory,
   getRelatedTasks,
 } from '../../utils/api/methods';
 
 export const getCategories = () => (dispatch, getState) => {
   const { categoryReducer } = getState();
-
   // If data was already requested from the server take it from the store
   if (categoryReducer.requestStatus.isResolved) return;
 
-  // console.log('Get categories');
+  console.log('Get Categories');
 
-  dispatch({
-    type: SET_CATEGORIES_GET_REQUEST,
-  });
-
-  getAllCategories()
-    .then((response) => {
-      const categoryList = response.data;
-
-      categoryList.sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
+  getCategoriesRequest()
+    .then(({ data }) => {
+      data.sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
 
       dispatch({
         type: SET_CATEGORIES,
-        payload: response.data,
+        data,
       });
     })
     .catch(() => {
@@ -50,19 +40,19 @@ export const getCategories = () => (dispatch, getState) => {
 
 export const createCategory = (category) => (dispatch) => {
   dispatch({
-    type: SET_CATEGORIES_CREATE_REQUEST,
+    type: SET_CATEGORY_CREATE_REQUEST,
   });
 
-  postNewCategory(category)
-    .then((response) => {
+  postCategory(category)
+    .then(({ data }) => {
       dispatch({
         type: ADD_CATEGORY,
-        payload: response.data,
+        data,
       });
     })
     .catch(() => {
       dispatch({
-        type: SET_CATEGORIES_CREATE_ERROR,
+        type: SET_CATEGORY_CREATE_ERROR,
       });
     });
 };
@@ -72,69 +62,35 @@ export const removeCategory = (id) => (dispatch, setState) => {
   const { categoryReducer } = setState();
   const { categoryList } = categoryReducer;
   const categoryToRemove = categoryList.find((category) => category.id === id);
+
   if (categoryToRemove.isDefault) return;
-  // Prepare to remove, set pending flag
+  // Show preloader
   dispatch({
-    type: SET_CATEGORIES_DELETE_REQUEST,
-    payload: id,
+    type: SET_CATEGORY_PENDING_STATUS,
+    id,
   });
   // Prevent category from removing if it has related tasks
   getRelatedTasks(id)
-    .then((response) => {
-      if (response.data.length) {
-        alert(
-          "This category can't be deleted, because it has related tasks.\nYou have to delete this tasks before deleting the category",
-        );
+    .then(({ data }) => {
+      if (data.length) throw new Error();
 
-        throw new Error();
-      }
-      return id;
-    })
-    .then((id) => {
-      deleteCategory(id);
+      return deleteCategory(id);
     })
     .then(() => {
       dispatch({
         type: DELETE_CATEGORY,
-        payload: id,
+        id,
       });
     })
     .catch(() => {
-      dispatch({
-        type: SET_CATEGORIES_DELETE_ERROR,
-        payload: id,
-      });
-    });
-};
-
-export const markCategoryDefault = (id) => (dispatch, getState) => {
-  // Find an id of category set as default
-  const { categoryReducer } = getState();
-  const { categoryList } = categoryReducer;
-  const defaultCategory = categoryList.find(({ isDefault }) => isDefault);
-
-  dispatch({
-    type: SET_CATEGORIES_DELETE_REQUEST,
-    payload: id,
-  });
-  // Reset default status on the server
-  patchCategory(id, { isDefault: true })
-    .then(() => {
-      // If there is no any default category, no need to reset
-      if (defaultCategory === undefined) return;
-
-      patchCategory(defaultCategory.id, { isDefault: false });
+      alert(
+        "This category can't be deleted, because it has related tasks.\nYou have to delete this tasks before deleting the category",
+      );
     })
-    .then(() => {
+    .finally(() => {
       dispatch({
-        type: SET_DEFAULT,
-        payload: id,
-      });
-    })
-    .catch(() => {
-      dispatch({
-        type: SET_CATEGORIES_DELETE_ERROR,
-        payload: id,
+        type: RESET_CATEGORY_PENDING_STATUS,
+        id,
       });
     });
 };

@@ -1,6 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+  wrapper: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+  },
+
   item: {
     flexGrow: 1,
   },

@@ -10,14 +10,14 @@ import {
 
 export default (taskId, categoryId) => {
   const dispatch = useDispatch();
-  const isModifyPending = useSelector(isModifyPendingSelector(taskId));
+  const isPending = useSelector(isModifyPendingSelector(taskId));
   const icon = useSelector(iconSelector(categoryId));
 
   const updateTask = (taskId, data) => dispatch(updateTaskAction(taskId, data));
   const removeTask = (taskId) => dispatch(removeTaskAction(taskId));
 
   return {
-    isModifyPending,
+    isPending,
     updateTask,
     removeTask,
     icon,

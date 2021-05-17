@@ -1,20 +1,28 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  markCategoryDefault as markCategoryDefaultAction,
-  removeCategory as removeCategoryAction,
-} from '../store/categories/actions';
+import { removeCategory as removeCategoryAction } from '../store/categories/actions';
+
+import { setDefaultCategoryId as setDefaultCategoryIdAction } from '../store/defaultCategoryId/actions';
+
 import { isDeletePendingSelector } from '../store/categories/selectors';
+import {
+  isDefaultCategorySelector,
+  isSetDefaultPendingSelector,
+} from '../store/defaultCategoryId/selectors';
 
 export default (id) => {
   const dispatch = useDispatch();
   const isDeletePending = useSelector(isDeletePendingSelector(id));
+  const isSetDefaultPending = useSelector(isSetDefaultPendingSelector(id));
+  const isDefault = useSelector(isDefaultCategorySelector(id));
 
   const removeCategory = (category) => dispatch(removeCategoryAction(category));
-  const markCategoryDefault = (id) => dispatch(markCategoryDefaultAction(id));
+  const setDefaultCategoryId = (id) => dispatch(setDefaultCategoryIdAction(id));
 
   return {
+    isDefault,
     isDeletePending,
+    isSetDefaultPending,
     removeCategory,
-    markCategoryDefault,
+    setDefaultCategoryId,
   };
 };

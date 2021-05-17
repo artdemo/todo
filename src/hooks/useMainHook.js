@@ -1,13 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useCallback } from 'react';
+
 import {
   isCreatePendingSelector,
   isCreateFailedSelector,
-  taskListFavoriteSelector,
-  isResolvedSelector as isTasksResolvedSelector,
 } from '../store/tasks/selectors';
-import useCategoryRequestHook from './useCategoryRequestHook';
-import { categoryListFlatSelector } from '../store/categories/selectors';
+import { categoryListFlattedSelector } from '../store/categories/selectors';
 import { createTask as createTaskAction } from '../store/tasks/actions';
 
 export default () => {
@@ -15,23 +12,14 @@ export default () => {
 
   const isCreatePending = useSelector(isCreatePendingSelector);
   const isCreateFailed = useSelector(isCreateFailedSelector);
-  const categoryListFlat = useSelector(categoryListFlatSelector);
-  const taskList = useSelector(taskListFavoriteSelector);
+  const categoryListFlatted = useSelector(categoryListFlattedSelector);
 
-  const isTasksResolved = useSelector(isTasksResolvedSelector);
-  const isCategoriesResolved = useCategoryRequestHook();
-
-  const createTask = useCallback((task) => dispatch(createTaskAction(task)), [
-    dispatch,
-  ]);
+  const createTask = (task) => dispatch(createTaskAction(task));
 
   return {
     isCreatePending,
     isCreateFailed,
-    categoryListFlat,
-    taskList,
-    isTasksResolved,
-    isCategoriesResolved,
+    categoryListFlatted,
     createTask,
   };
 };

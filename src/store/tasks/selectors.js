@@ -1,22 +1,24 @@
-/*eslint-disable*/
-
 import { createSelector } from 'reselect';
 import set from '../../utils/set.json';
 
-// Find completed tasks
-export const taskListCompletedSelector = createSelector(
-  ({ taskReducer }) => taskReducer.taskList,
-  (taskList) => taskList.filter((task) => task.isCompleted),
-);
+// =============== MAIN PAGE & COMPLETED PAGE SELECTORS ================= //
 
-// Find uncompleted tasks, favorite tasks goes first
-export const taskListFavoriteSelector = createSelector(
-  ({ taskReducer }) => taskReducer.taskList,
-  (taskList) =>
-    taskList
-      .filter((task) => !task.isCompleted)
-      .sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite)),
-);
+export const taskListSelector = ({ taskReducer }) => taskReducer.taskList;
+
+export const totalCountSelector = ({ taskReducer }) => taskReducer.totalCount;
+
+export const isResolvedSelector = ({ taskReducer }) =>
+  taskReducer.requestStatus.isResolved;
+
+export const isCreatePendingSelector = ({ taskReducer }) =>
+  taskReducer.requestStatus.isCreatePending;
+
+export const isCreateFailedSelector = ({ taskReducer }) =>
+  taskReducer.requestStatus.isCreateFailed;
+
+export const queryParamsSelector = ({ taskReducer }) => taskReducer.queryParams;
+
+// ========================= TASK SELECTORS ====================== //
 
 // Find icon that matches given category
 export const iconSelector = (categoryId) =>
@@ -29,6 +31,11 @@ export const iconSelector = (categoryId) =>
     },
   );
 
+export const isModifyPendingSelector = (id) => ({ taskReducer }) =>
+  taskReducer.requestStatus.pendingTasks.includes(id);
+
+// ====================== SORT PANEL SELECTORS ====================== //
+// Return an object { color: count } for SortPanel
 export const usedColorsSelector = createSelector(
   ({ taskReducer }) => taskReducer.taskList,
   (taskList) => {
@@ -44,46 +51,27 @@ export const usedColorsSelector = createSelector(
   },
 );
 
-export const isResolvedSelector = ({ taskReducer }) =>
-  taskReducer.requestStatus.isResolved;
-
-export const isCreatePendingSelector = ({ taskReducer }) =>
-  taskReducer.requestStatus.isCreatePending;
-
-export const isCreateFailedSelector = ({ taskReducer }) =>
-  taskReducer.requestStatus.isCreateFailed;
-
-export const isModifyPendingSelector = (id) => ({ taskReducer }) =>
-  taskReducer.requestStatus.pendingTasks.includes(id);
-
-export const isSortPendingSelector = ({ taskReducer }) =>
-  taskReducer.requestStatus.isSortPending;
-
-export const queryParamsSelector = ({ taskReducer }) => taskReducer.queryParams;
 // Get sort object from sort query string
 export const sortObjSelector = createSelector(
   ({ taskReducer }) => taskReducer.queryParams._sort,
   (sortQuery) => {
-    const template = {
-      date: false,
-      name: false,
-    };
-
-    if (sortQuery === '') return template;
-
     const sortObj = sortQuery
       .split(',')
-      .reduce((obj, key) => ({ ...obj, [key]: true }), template);
+      .reduce((obj, key) => ({ ...obj, [key]: true }), {});
 
-    return sortObj;
+    const { date = false, name = false } = sortObj;
+
+    return { date, name };
   },
 );
 
+// Get colors array from query
 export const filterColorArraySelector = createSelector(
   ({ taskReducer }) => taskReducer.queryParams.color,
   (color) => (Array.isArray(color) ? color : [color]),
 );
 
+// Get categories array from query
 export const filterCategoryArraySelector = createSelector(
   ({ taskReducer }) => taskReducer.queryParams.categoryId,
   (categoryId) => (Array.isArray(categoryId) ? categoryId : [categoryId]),

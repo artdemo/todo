@@ -16,5 +16,5 @@ export default () => {
 
   const isResolved = useSelector(isResolvedSelector);
 
-  return isResolved;
+  return { isResolved };
 };

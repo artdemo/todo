@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { withRouter, Route, Redirect, Switch, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -16,8 +16,31 @@ import Error from '../../pages/Error';
 import SortPanel from '../SortPanel';
 import useStyles from './style';
 
+const tabs = [
+  { label: 'Main', to: '/main' },
+  { label: 'Completed', to: '/completed' },
+  { label: 'Settings', to: '/settings' },
+];
+
 const App = ({ location }) => {
   const classes = useStyles();
+
+  const tabsToRender = useMemo(
+    () =>
+      tabs.map(({ label, to }) => (
+        <Tab
+          key={label}
+          label={label}
+          to={to}
+          value={to}
+          component={Link}
+          onClick={(e) => {
+            if (location.pathname === to) e.preventDefault();
+          }}
+        />
+      )),
+    [location.pathname],
+  );
 
   return (
     <div className={classes.wrapper}>
@@ -34,33 +57,7 @@ const App = ({ location }) => {
             orientation="vertical"
             className={classes.tabs}
           >
-            <Tab
-              label="Main"
-              component={Link}
-              to="/main"
-              value="/main"
-              onClick={(e) => {
-                if (location.pathname === '/main') e.preventDefault();
-              }}
-            />
-            <Tab
-              label="Completed"
-              component={Link}
-              to="/completed"
-              value="/completed"
-              onClick={(e) => {
-                if (location.pathname === '/completed') e.preventDefault();
-              }}
-            />
-            <Tab
-              label="Settings"
-              component={Link}
-              to="/settings"
-              value="/settings"
-              onClick={(e) => {
-                if (location.pathname === '/settings') e.preventDefault();
-              }}
-            />
+            {tabsToRender}
           </Tabs>
           <Divider />
           {(location.pathname === '/main' ||

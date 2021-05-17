@@ -1,74 +1,100 @@
 import {
   SET_TASKS,
+  ADD_PAGE,
   ADD_TASK,
   UPDATE_TASK,
   DELETE_TASK,
   SET_TASKS_GET_ERROR,
   SET_TASKS_CREATE_REQUEST,
   SET_TASKS_CREATE_ERROR,
-  SET_TASKS_MODIFY_START,
-  SET_TASKS_MODIFY_FINISH,
-  SET_TASKS_SORT_REQUEST,
+  SET_TASK_PENDING_STATUS,
+  RESET_TASK_PENDING_STATUS,
+  SET_PARAMS,
 } from './types';
 
 const initialState = {
   taskList: [],
+  totalCount: 0,
   queryParams: {
     _sort: '',
     categoryId: [],
     color: [],
+    _start: 0,
+    _limit: `${process.env.REACT_APP_PAGE_LIMIT}`,
+    _order: 'desc',
+    isCompleted: false,
   },
   requestStatus: {
     isCreatePending: false,
     isCreateFailed: null,
-    isSortPending: false,
     isResolved: null,
+    // Array to store id of tasks while they are updated or deleted, so to show preloader in the component
     pendingTasks: [],
   },
 };
 
 const taskReducer = (state = initialState, action) => {
   switch (action.type) {
-    // ================= GET REQUEST =============== //
-    case SET_TASKS:
+    // ================= GET TASKS =============== //
+    case SET_TASKS: {
+      const taskList = [...state.taskList];
+      // Just created tasks are already placed on the top of the list, no need to show them again
+      action.taskList.forEach((newTask) => {
+        if (taskList.find((oldTask) => oldTask.id === newTask.id)) return;
+        taskList.push(newTask);
+      });
+
       return {
         ...state,
-        taskList: action.payload.taskList,
-        queryParams: { ...state.queryParams, ...action.payload.params },
+        taskList,
+        totalCount: +action.totalCount,
         requestStatus: {
           ...state.requestStatus,
           isResolved: true,
-          isSortPending: false,
         },
       };
-    case SET_TASKS_SORT_REQUEST:
+    }
+    case ADD_PAGE:
       return {
         ...state,
-        requestStatus: {
-          ...state.requestStatus,
-          isSortPending: true,
+        queryParams: {
+          ...state.queryParams,
+          _start: +state.queryParams._start + +state.queryParams._limit,
         },
       };
+    case SET_PARAMS: {
+      const newQueryParams = { ...state.queryParams, ...action.params };
+
+      if (!newQueryParams._sort.includes('isFavorite'))
+        newQueryParams._sort = `isFavorite,${newQueryParams._sort}`;
+
+      return {
+        ...state,
+        taskList: [],
+        queryParams: newQueryParams,
+        requestStatus: { ...state.requestStatus, isResolved: null },
+      };
+    }
     case SET_TASKS_GET_ERROR:
       return {
         ...state,
         requestStatus: {
           ...state.requestStatus,
           isResolved: false,
-          isSortPending: false,
         },
       };
-    // ================ CREATE REQUEST ================= //
-    case ADD_TASK:
+    // ================ CREATE TASK ================= //
+    case ADD_TASK: {
       return {
         ...state,
-        taskList: [...state.taskList, action.payload],
+        taskList: [action.data, ...state.taskList],
         requestStatus: {
           ...state.requestStatus,
           isCreatePending: false,
           isCreateFailed: false,
         },
       };
+    }
     case SET_TASKS_CREATE_REQUEST:
       return {
         ...state,
@@ -87,46 +113,52 @@ const taskReducer = (state = initialState, action) => {
           isCreateFailed: true,
         },
       };
-    // ================= UPDATE REQUEST ================ //
+    // ================= UPDATE TASK ================ //
     case UPDATE_TASK: {
-      const updatedTasks = state.taskList.map((task) =>
-        task.id === action.id ? { ...task, ...action.data } : task,
-      );
+      const updatedTasks =
+        'isCompleted' in action.data
+          ? state.taskList.filter((task) => task.id !== action.id)
+          : state.taskList
+              .map((task) =>
+                task.id === action.id ? { ...task, ...action.data } : task,
+              )
+              .sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite));
 
       return {
         ...state,
         taskList: updatedTasks,
       };
     }
-    case SET_TASKS_MODIFY_START:
-      return {
-        ...state,
-        requestStatus: {
-          ...state.requestStatus,
-          pendingTasks: [...state.requestStatus.pendingTasks, action.payload],
-        },
-      };
-    case SET_TASKS_MODIFY_FINISH: {
-      const filteredPendingTasks = state.requestStatus.pendingTasks.filter(
-        (id) => id !== action.payload,
-      );
+    // =================== DELETE TASK ================== //
+    case DELETE_TASK: {
+      // Set offset so not jump over one task
+      const { queryParams } = state;
+      queryParams._start -= 1;
 
       return {
         ...state,
-        requestStatus: {
-          ...state.requestStatus,
-          pendingTasks: filteredPendingTasks,
-        },
+        taskList: state.taskList.filter((task) => task.id !== action.id),
+        totalCount: state.totalCount - 1,
       };
     }
-    // =================== DELETE REQUEST ================== //
-    case DELETE_TASK: {
-      const filteredTasks = state.taskList.filter(
-        (task) => task.id !== action.payload,
-      );
+    // ================ SWITCH PENDING STATUS ============== //
+    case SET_TASK_PENDING_STATUS:
       return {
         ...state,
-        taskList: filteredTasks,
+        requestStatus: {
+          ...state.requestStatus,
+          pendingTasks: [...state.requestStatus.pendingTasks, action.id],
+        },
+      };
+    case RESET_TASK_PENDING_STATUS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          pendingTasks: state.requestStatus.pendingTasks.filter(
+            (id) => id !== action.id,
+          ),
+        },
       };
     }
     default:

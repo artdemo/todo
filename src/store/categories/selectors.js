@@ -1,9 +1,29 @@
 import { createSelector } from 'reselect';
 import set from '../../utils/set.json';
 
-export const categoryListSelector = ({ categoryReducer }) =>
-  categoryReducer.categoryList;
+export const categoryListSelector = createSelector(
+  ({ categoryReducer }) => categoryReducer.categoryList,
+  ({ defaultCategoryIdReducer }) => defaultCategoryIdReducer.defaultCategoryId,
+  (categoryList, defaultCategoryId) =>
+    [...categoryList].sort(({ id }) => {
+      if (id === defaultCategoryId) return -1;
+      return 1;
+    }),
+);
 
+export const isResolvedSelector = ({ categoryReducer }) =>
+  categoryReducer.requestStatus.isResolved;
+
+export const isCreatePendingSelector = ({ categoryReducer }) =>
+  categoryReducer.requestStatus.isCreatePending;
+
+export const isCreateFailedSelector = ({ categoryReducer }) =>
+  categoryReducer.requestStatus.isCreateFailed;
+
+export const isDeletePendingSelector = (id) => ({ categoryReducer }) =>
+  categoryReducer.requestStatus.pendingCategories.includes(id);
+
+// Get free icons and all colors
 export const iconListSelector = createSelector(
   ({ categoryReducer }) => categoryReducer.categoryList,
   (categoryList) => {
@@ -23,22 +43,24 @@ export const iconListSelector = createSelector(
   },
 );
 
-export const categoryListFlatSelector = createSelector(
+// Get separate entity for each icon-color relation
+export const categoryListFlattedSelector = createSelector(
   ({ categoryReducer }) => categoryReducer.categoryList,
   (categoryList) => {
-    const categoryListFlat = [];
+    const categoryListFlatted = [];
 
     categoryList.forEach(({ name, icon, colors, id }) => {
       colors.forEach((color) => {
-        categoryListFlat.push({ name, icon, color, id });
+        categoryListFlatted.push({ name, icon, color, id });
       });
     });
 
-    return categoryListFlat;
+    return categoryListFlatted;
   },
 );
 
-export const categoryListAmountSelector = createSelector(
+// Get categories list with count of all corresponding tasks
+export const categoryListTaskCountSelector = createSelector(
   ({ categoryReducer }) => categoryReducer.categoryList,
   ({ taskReducer }) => taskReducer.taskList,
   (categoryList, taskList) =>
@@ -48,15 +70,3 @@ export const categoryListAmountSelector = createSelector(
       return { id: id.toString(), name, icon, taskAmount: tasks.length };
     }),
 );
-
-export const isResolvedSelector = ({ categoryReducer }) =>
-  categoryReducer.requestStatus.isResolved;
-
-export const isCreatePendingSelector = ({ categoryReducer }) =>
-  categoryReducer.requestStatus.isCreatePending;
-
-export const isCreateFailedSelector = ({ categoryReducer }) =>
-  categoryReducer.requestStatus.isCreateFailed;
-
-export const isDeletePendingSelector = (id) => ({ categoryReducer }) =>
-  categoryReducer.requestStatus.pendingCategories.includes(id);
