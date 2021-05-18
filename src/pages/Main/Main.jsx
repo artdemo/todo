@@ -99,7 +99,7 @@ const Main = () => {
     <FrameBox>
       <form onSubmit={handleSubmit}>
         <Grid container alignContent="center" spacing={2}>
-          <Grid item xs={7}>
+          <Grid item sm={7} xs={12}>
             <TextField
               variant="outlined"
               margin="none"
@@ -111,10 +111,10 @@ const Main = () => {
               onChange={(e) => setTextControlValue(e.currentTarget.value)}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item sm={2} xs={6}>
             {categorySelect}
           </Grid>
-          <Grid item xs={3}>
+          <Grid item sm={3} xs={6}>
             <SubmitButton isLoading={isCreatePending}>Add</SubmitButton>
           </Grid>
         </Grid>

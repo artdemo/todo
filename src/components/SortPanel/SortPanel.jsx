@@ -82,7 +82,6 @@ const SortPanel = () => {
       _sort: sortString,
       categoryId: filterCategoryState,
       color: filterColorState,
-      // _page: 1,
       _start: 0,
     });
   };

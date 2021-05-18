@@ -27,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
   hidden: {
     visibility: 'hidden',
   },
+
+  button: {
+    [theme.breakpoints.down('xs')]: {
+      padding: 0,
+    },
+  },
 }));
 
 export default useStyles;

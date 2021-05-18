@@ -104,7 +104,7 @@ const Settings = () => {
     <FrameBox>
       <form onSubmit={handleCreateCategory}>
         <Grid container alignContent="center" spacing={2}>
-          <Grid item xs={6}>
+          <Grid item sm={6} xs={12}>
             <TextField
               variant="outlined"
               margin="none"
@@ -117,13 +117,13 @@ const Settings = () => {
               disabled={!availableIcons.length}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item sm={2} xs={4}>
             {iconSelect}
           </Grid>
-          <Grid item xs={2}>
+          <Grid item sm={2} xs={4}>
             {colorSelect}
           </Grid>
-          <Grid item xs={2}>
+          <Grid item sm={2} xs={4}>
             <SubmitButton
               isLoading={isCreatePending}
               disabled={!availableIcons.length}

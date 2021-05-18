@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { withRouter, Route, Redirect, Switch, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -8,26 +8,39 @@ import {
   Hidden,
   CssBaseline,
   Divider,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
 } from '@material-ui/core';
 import Main from '../../pages/Main';
 import Completed from '../../pages/Completed';
 import Settings from '../../pages/Settings';
 import Error from '../../pages/Error';
+import Icon from '../Icon';
 import SortPanel from '../SortPanel';
 import useStyles from './style';
 
-const tabs = [
-  { label: 'Main', to: '/main' },
-  { label: 'Completed', to: '/completed' },
-  { label: 'Settings', to: '/settings' },
-];
+const tabs = {
+  '/': '',
+  '/main': 'Main',
+  '/completed': 'Completed',
+  '/settings': 'Settings',
+};
 
 const App = ({ location }) => {
   const classes = useStyles();
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  // ================= TABS ================= //
   const tabsToRender = useMemo(
     () =>
-      tabs.map(({ label, to }) => (
+      Object.entries(tabs).map(([to, label]) => (
         <Tab
           key={label}
           label={label}
@@ -42,29 +55,63 @@ const App = ({ location }) => {
     [location.pathname],
   );
 
+  // ================ DRAWER ================ //
+  const drawer = (
+    <>
+      <Tabs
+        value={location.pathname}
+        orientation="vertical"
+        className={classes.tabs}
+      >
+        {tabsToRender}
+      </Tabs>
+      <Divider />
+      {(location.pathname === '/main' ||
+        location.pathname === '/completed') && (
+        <SortPanel handleDrawerToggle={handleDrawerToggle} />
+      )}
+    </>
+  );
+
+  // ================ APP ================ //
   return (
     <div className={classes.wrapper}>
       <CssBaseline />
-      <Hidden xsDown implementation="css">
+      <AppBar className={classes.appBar}>
+        <Toolbar>
+          <IconButton
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
+          >
+            <Icon iconName="menu" fontSize="large" iconColor="white" />
+          </IconButton>
+          <Typography variant="h6" noWrap className={classes.appBarHeading}>
+            {tabs[location.pathname].toUpperCase()}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Hidden smDown implementation="css">
         <Drawer
           variant="permanent"
-          anchor="left"
           className={classes.drawer}
           classes={{ paper: classes.drawer }}
         >
-          <Tabs
-            value={location.pathname}
-            orientation="vertical"
-            className={classes.tabs}
-          >
-            {tabsToRender}
-          </Tabs>
-          <Divider />
-          {(location.pathname === '/main' ||
-            location.pathname === '/completed') && <SortPanel />}
+          {drawer}
         </Drawer>
       </Hidden>
-      <main className={`${classes.main} mainContent`}>
+      <Hidden mdUp implementation="css">
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          className={classes.drawer}
+          classes={{ paper: classes.drawer }}
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <main className={classes.main}>
+        <div className={classes.offset} />
         <Switch>
           <Route exact path="/">
             <Redirect to="/completed" />

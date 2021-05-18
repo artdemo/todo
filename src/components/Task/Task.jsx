@@ -1,6 +1,18 @@
+/*eslint-disable*/
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Checkbox, Grid, Typography } from '@material-ui/core';
+
+import { format } from 'date-fns';
+
+import {
+  TextField,
+  Checkbox,
+  Grid,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 import FavoriteButton from '../Buttons/FavoriteButton';
 import DeleteButton from '../Buttons/DeleteButton';
 import ItemLoader from '../Loaders/ItemLoader';
@@ -18,6 +30,8 @@ const Task = ({
   date,
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const { icon, isPending, removeTask, updateTask } = useTaskHook(
     id,
@@ -52,9 +66,10 @@ const Task = ({
         className={`${classes.form} ${isPending && classes.hidden}`}
         onSubmit={handleSubmit}
       >
-        <Grid container alignItems="center" spacing={2}>
+        <Grid container alignItems="center" spacing={2} wrap="nowrap">
           <Grid item>
             <Checkbox
+              size={isXs ? 'small' : 'medium'}
               checked={isCompleted}
               onChange={(e) =>
                 updateTask(id, {
@@ -79,7 +94,12 @@ const Task = ({
             />
           </Grid>
           <Grid item>
-            <Typography variant="caption">{date}</Typography>
+            <Typography
+              variant="caption"
+              classes={{ caption: classes.caption }}
+            >
+              {isXs ? format(new Date(date), 'yy/MM/dd') : date}
+            </Typography>
           </Grid>
           {!isCompleted && (
             <Grid item>

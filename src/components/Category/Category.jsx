@@ -39,6 +39,7 @@ const Category = ({ id, name, icon, colors }) => {
             setDefaultCategoryId(id);
           }}
           disabled={isDefault}
+          className={classes.button}
         >
           <Icon iconName={icon} />
         </IconButton>

@@ -15,6 +15,7 @@ const FavoriteButton = ({ handleMarkFavorite, isFavorite }) => {
       onClick={handleMarkFavorite}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      className={classes.button}
     >
       <Fade in={isFavorite}>
         <Icon iconName="star" iconColor="gold" />
