@@ -1,6 +1,5 @@
 .env
 db.json
-# dependencies
 /node_modules
-# production
 # /build
+git-bash.exe.lnk
