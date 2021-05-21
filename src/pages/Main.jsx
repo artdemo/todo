@@ -2,15 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Grid, TextField } from '@material-ui/core';
-import FrameBox from '../../components/FrameBox';
-import SubmitButton from '../../components/Buttons/SubmitButton';
-import CategorySelect from '../../components/Selects/CategorySelect';
-import Task from '../../components/Task';
-import MainLoader from '../../components/Loaders/MainLoader';
-import SimpleLoader from '../../components/Loaders/SimpleLoader';
-import useMainHook from '../../hooks/useMainHook';
-import useTaskRequestHook from '../../hooks/useTaskRequestHook';
-import useCategoryRequestHook from '../../hooks/useCategoryRequestHook';
+import FrameBox from '../components/FrameBox';
+import SubmitButton from '../components/Buttons/SubmitButton';
+import CategorySelect from '../components/Selects/CategorySelect';
+import Task from '../components/Task';
+import MainLoader from '../components/Loaders/MainLoader';
+import SimpleLoader from '../components/Loaders/SimpleLoader';
+import useMainHook from '../hooks/useMainHook';
+import useTaskRequestHook from '../hooks/useTaskRequestHook';
+import useCategoryRequestHook from '../hooks/useCategoryRequestHook';
 
 const Main = () => {
   const [textControlValue, setTextControlValue] = useState('');

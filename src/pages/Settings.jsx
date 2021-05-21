@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Grid, List, ListItem, TextField } from '@material-ui/core';
-import MainLoader from '../../components/Loaders/MainLoader';
-import FrameBox from '../../components/FrameBox';
-import Category from '../../components/Category';
-import IconSelect from '../../components/Selects/IconSelect';
-import SubmitButton from '../../components/Buttons/SubmitButton';
-import ColorSelect from '../../components/Selects/ColorSelect';
-import useSettingsHook from '../../hooks/useSettingsHook';
+import MainLoader from '../components/Loaders/MainLoader';
+import FrameBox from '../components/FrameBox';
+import Category from '../components/Category';
+import IconSelect from '../components/Selects/IconSelect';
+import SubmitButton from '../components/Buttons/SubmitButton';
+import ColorSelect from '../components/Selects/ColorSelect';
+import useSettingsHook from '../hooks/useSettingsHook';
 
 const Settings = () => {
   const {

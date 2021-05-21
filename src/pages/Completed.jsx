@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Task from '../../components/Task';
-import FrameBox from '../../components/FrameBox';
-import MainLoader from '../../components/Loaders/MainLoader';
-import SimpleLoader from '../../components/Loaders/SimpleLoader';
-import useTaskRequestHook from '../../hooks/useTaskRequestHook';
-import useCategoryRequestHook from '../../hooks/useCategoryRequestHook';
+import Task from '../components/Task';
+import FrameBox from '../components/FrameBox';
+import MainLoader from '../components/Loaders/MainLoader';
+import SimpleLoader from '../components/Loaders/SimpleLoader';
+import useTaskRequestHook from '../hooks/useTaskRequestHook';
+import useCategoryRequestHook from '../hooks/useCategoryRequestHook';
 
 const Completed = () => {
   const {
