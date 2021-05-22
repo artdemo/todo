@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { withRouter, Route, Redirect, Switch, Link } from 'react-router-dom';
+import { withRouter, Route, Switch, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Tabs,
@@ -13,23 +13,15 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
-import Main from '../../pages/Main';
-import Completed from '../../pages/Completed';
-import Settings from '../../pages/Settings';
-import Error from '../../pages/Error';
 import Icon from '../Icon';
 import SortPanel from '../SortPanel';
 import useStyles from './style';
-
-const tabs = {
-  '/': '',
-  '/main': 'Main',
-  '/completed': 'Completed',
-  '/settings': 'Settings',
-};
+import { routes } from '../../routes';
 
 const App = ({ location }) => {
   const classes = useStyles();
+  // Does the current path match the route
+  const route = routes.find(({ path }) => path === location.pathname);
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -40,18 +32,20 @@ const App = ({ location }) => {
   // ================= TABS ================= //
   const tabsToRender = useMemo(
     () =>
-      Object.entries(tabs).map(([to, label]) => (
-        <Tab
-          key={label}
-          label={label}
-          to={to}
-          value={to}
-          component={Link}
-          onClick={(e) => {
-            if (location.pathname === to) e.preventDefault();
-          }}
-        />
-      )),
+      routes
+        .filter(({ path }) => path !== '*')
+        .map(({ path, title }) => (
+          <Tab
+            key={path}
+            label={title}
+            to={path}
+            value={path}
+            component={Link}
+            onClick={(e) => {
+              if (location.pathname === path) e.preventDefault();
+            }}
+          />
+        )),
     [location.pathname],
   );
 
@@ -66,8 +60,7 @@ const App = ({ location }) => {
         {tabsToRender}
       </Tabs>
       <Divider />
-      {(location.pathname === '/main' ||
-        location.pathname === '/completed') && (
+      {(location.pathname === '/main' || location.pathname === '/') && (
         <SortPanel handleDrawerToggle={handleDrawerToggle} />
       )}
     </>
@@ -77,6 +70,7 @@ const App = ({ location }) => {
   return (
     <div className={classes.wrapper}>
       <CssBaseline />
+
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton
@@ -85,11 +79,14 @@ const App = ({ location }) => {
           >
             <Icon iconName="menu" fontSize="large" iconColor="white" />
           </IconButton>
-          <Typography variant="h6" noWrap className={classes.appBarHeading}>
-            {tabs[location.pathname].toUpperCase()}
-          </Typography>
+          {route && (
+            <Typography variant="h6" noWrap className={classes.appBarHeading}>
+              {route.title.toUpperCase()}
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
+
       <Hidden smDown implementation="css">
         <Drawer
           variant="permanent"
@@ -113,13 +110,9 @@ const App = ({ location }) => {
       <main className={classes.main}>
         <div className={classes.offset} />
         <Switch>
-          <Route exact path="/">
-            <Redirect to="/completed" />
-          </Route>
-          <Route path="/settings" component={Settings} />
-          <Route path="/main" component={Main} />
-          <Route path="/completed" component={Completed} />
-          <Route component={Error} />
+          {routes.map(({ path, component }) => (
+            <Route exact path={path} component={component} key={path} />
+          ))}
         </Switch>
       </main>
     </div>

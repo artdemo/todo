@@ -19,5 +19,6 @@ module.exports = {
       { allow: ['_sort', '_start', '_limit', '_order'] },
     ],
     'react-hooks/exhaustive-deps': 'off',
+    'import/prefer-default-export': 'off',
   },
 };

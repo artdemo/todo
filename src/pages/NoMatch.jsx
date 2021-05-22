@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 
-const Error = () => (
+const NoMatch = () => (
   <>
     <Typography variant="h1" align="center" color="secondary">
       404
@@ -10,4 +10,4 @@ const Error = () => (
   </>
 );
 
-export default Error;
+export default NoMatch;
