@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Grid, List, ListItem, TextField } from '@material-ui/core';
-import MainLoader from '../components/Loaders/MainLoader';
-import FrameBox from '../components/FrameBox';
-import Category from '../components/Category';
-import IconSelect from '../components/Selects/IconSelect';
-import SubmitButton from '../components/Buttons/SubmitButton';
-import ColorSelect from '../components/Selects/ColorSelect';
-import useSettingsHook from '../hooks/useSettingsHook';
+import { LoaderMain } from '../components/LoaderMain';
+import { FrameBox } from '../components/FrameBox';
+import { Category } from '../components/Category';
+import { SelectIcon } from '../components/SelectIcon';
+import { ButtonSubmit } from '../components/ButtonSubmit';
+import { SelectColor } from '../components/SelectColor';
+import { useSettingsHook } from '../hooks/useSettingsHook';
 
-const Settings = () => {
+export const Settings = () => {
   const {
     colors,
     categoryList,
@@ -48,9 +48,9 @@ const Settings = () => {
   );
 
   // ==================== COLOR SELECT ===================== //
-  const colorSelect = useMemo(
+  const selectColor = useMemo(
     () => (
-      <ColorSelect
+      <SelectColor
         icons={availableIcons}
         colors={colors}
         selectedColors={selectedColors}
@@ -61,9 +61,9 @@ const Settings = () => {
   );
 
   // ==================== ICON SELECT ===================== //
-  const iconSelect = useMemo(
+  const selectIcon = useMemo(
     () => (
-      <IconSelect
+      <SelectIcon
         icons={availableIcons}
         iconIndex={iconIndex}
         handleChange={(e) => setIconIndex(e.target.value)}
@@ -73,7 +73,7 @@ const Settings = () => {
   );
 
   // ==================== MAIN LOADER ==================== //
-  if (!isResolved) return <MainLoader />;
+  if (!isResolved) return <LoaderMain />;
 
   // =================== SETTINGS PAGE =================== //
   const handleCreateCategory = (e) => {
@@ -118,18 +118,18 @@ const Settings = () => {
             />
           </Grid>
           <Grid item sm={2} xs={4}>
-            {iconSelect}
+            {selectIcon}
           </Grid>
           <Grid item sm={2} xs={4}>
-            {colorSelect}
+            {selectColor}
           </Grid>
           <Grid item sm={2} xs={4}>
-            <SubmitButton
+            <ButtonSubmit
               isLoading={isCreatePending}
               disabled={!availableIcons.length}
             >
               Add
-            </SubmitButton>
+            </ButtonSubmit>
           </Grid>
         </Grid>
       </form>
@@ -137,5 +137,3 @@ const Settings = () => {
     </FrameBox>
   );
 };
-
-export default Settings;

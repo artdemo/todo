@@ -1,5 +1,5 @@
 import axios from 'axios';
-import instance from './instance';
+import { instance } from './instance';
 
 const PATH_TO_TASKS = '/todos';
 const PATH_TO_CATEGORIES = '/categories';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 
-const NoMatch = () => (
+export const NoMatch = () => (
   <>
     <Typography variant="h1" align="center" color="secondary">
       404
@@ -9,5 +9,3 @@ const NoMatch = () => (
     <Typography align="center">This page was not found</Typography>
   </>
 );
-
-export default NoMatch;

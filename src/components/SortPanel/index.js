@@ -1,1 +1,1 @@
-export { default } from './SortPanel';
+export * from './SortPanel';

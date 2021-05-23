@@ -8,7 +8,7 @@ import {
 } from '../store/tasks/selectors';
 import { categoryListTaskCountSelector } from '../store/categories/selectors';
 
-export default () => {
+export const useSortPanelHook = () => {
   const dispatch = useDispatch();
 
   const categoryListTaskCount = useSelector(categoryListTaskCountSelector);

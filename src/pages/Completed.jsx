@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Task from '../components/Task';
-import FrameBox from '../components/FrameBox';
-import MainLoader from '../components/Loaders/MainLoader';
-import SimpleLoader from '../components/Loaders/SimpleLoader';
-import useTaskRequestHook from '../hooks/useTaskRequestHook';
-import useCategoryRequestHook from '../hooks/useCategoryRequestHook';
+import { Task } from '../components/Task';
+import { FrameBox } from '../components/FrameBox';
+import { LoaderMain } from '../components/LoaderMain';
+import { LoaderPage } from '../components/LoaderPage';
+import { useTaskRequestHook } from '../hooks/useTaskRequestHook';
+import { useCategoryRequestHook } from '../hooks/useCategoryRequestHook';
 
-const Completed = () => {
+export const Completed = () => {
   const {
     taskList,
     isTasksResolved,
@@ -39,7 +39,7 @@ const Completed = () => {
 
   // ======================== LOADER ========================== //
   if (isTasksResolved === null || isCategoriesResolved === null)
-    return <MainLoader />;
+    return <LoaderMain />;
 
   // ===================== COMPLETED PAGE ===================== //
   return (
@@ -49,12 +49,10 @@ const Completed = () => {
         hasMore={Boolean(totalCount > taskList.length)}
         next={addPage}
         style={{ overflow: 'visible' }}
-        loader={<SimpleLoader />}
+        loader={<LoaderPage />}
       >
         {tasksToRender}
       </InfiniteScroll>
     </FrameBox>
   );
 };
-
-export default Completed;

@@ -2,17 +2,17 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Grid, TextField } from '@material-ui/core';
-import FrameBox from '../components/FrameBox';
-import SubmitButton from '../components/Buttons/SubmitButton';
-import CategorySelect from '../components/Selects/CategorySelect';
-import Task from '../components/Task';
-import MainLoader from '../components/Loaders/MainLoader';
-import SimpleLoader from '../components/Loaders/SimpleLoader';
-import useMainHook from '../hooks/useMainHook';
-import useTaskRequestHook from '../hooks/useTaskRequestHook';
-import useCategoryRequestHook from '../hooks/useCategoryRequestHook';
+import { FrameBox } from '../components/FrameBox';
+import { ButtonSubmit } from '../components/ButtonSubmit';
+import { SelectCategory } from '../components/SelectCategory';
+import { Task } from '../components/Task';
+import { LoaderMain } from '../components/LoaderMain';
+import { LoaderPage } from '../components/LoaderPage';
+import { useMainHook } from '../hooks/useMainHook';
+import { useTaskRequestHook } from '../hooks/useTaskRequestHook';
+import { useCategoryRequestHook } from '../hooks/useCategoryRequestHook';
 
-const Main = () => {
+export const Main = () => {
   const [textControlValue, setTextControlValue] = useState('');
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
 
@@ -40,9 +40,9 @@ const Main = () => {
   }, [isCreateFailed]);
 
   // ======================= CATEGORY_SELECT ===================== //
-  const categorySelect = useMemo(
+  const selectCategory = useMemo(
     () => (
-      <CategorySelect
+      <SelectCategory
         categoryList={categoryListFlatted}
         index={selectedCategoryIndex}
         handleChange={(e) => setSelectedCategoryIndex(e.target.value)}
@@ -73,7 +73,7 @@ const Main = () => {
 
   // ======================== LOADER ========================== //
   if (isTasksResolved === null || isCategoriesResolved === null)
-    return <MainLoader />;
+    return <LoaderMain />;
 
   // ======================= MAIN PAGE ======================== //
   const handleSubmit = (e) => {
@@ -112,10 +112,10 @@ const Main = () => {
             />
           </Grid>
           <Grid item sm={2} xs={6}>
-            {categorySelect}
+            {selectCategory}
           </Grid>
           <Grid item sm={3} xs={6}>
-            <SubmitButton isLoading={isCreatePending}>Add</SubmitButton>
+            <ButtonSubmit isLoading={isCreatePending}>Add</ButtonSubmit>
           </Grid>
         </Grid>
       </form>
@@ -124,12 +124,10 @@ const Main = () => {
         hasMore={Boolean(totalCount > taskList.length)}
         next={addPage}
         style={{ overflow: 'visible' }}
-        loader={<SimpleLoader />}
+        loader={<LoaderPage />}
       >
         {tasksToRender}
       </InfiniteScroll>
     </FrameBox>
   );
 };
-
-export default Main;

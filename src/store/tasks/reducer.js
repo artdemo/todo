@@ -33,7 +33,7 @@ const initialState = {
   },
 };
 
-const taskReducer = (state = initialState, action) => {
+export const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     // ================= GET TASKS =============== //
     case SET_TASKS: {
@@ -165,5 +165,3 @@ const taskReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default taskReducer;

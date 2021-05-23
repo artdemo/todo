@@ -7,7 +7,7 @@ import {
 import { categoryListFlattedSelector } from '../store/categories/selectors';
 import { createTask as createTaskAction } from '../store/tasks/actions';
 
-export default () => {
+export const useMainHook = () => {
   const dispatch = useDispatch();
 
   const isCreatePending = useSelector(isCreatePendingSelector);

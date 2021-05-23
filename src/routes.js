@@ -1,7 +1,7 @@
-import Main from './pages/Main';
-import Completed from './pages/Completed';
-import Settings from './pages/Settings';
-import NoMatch from './pages/NoMatch';
+import { Main } from './pages/Main';
+import { Completed } from './pages/Completed';
+import { Settings } from './pages/Settings';
+import { NoMatch } from './pages/NoMatch';
 
 export const routes = [
   {

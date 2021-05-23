@@ -15,7 +15,7 @@ import {
 } from '../store/tasks/actions';
 import { cancelRequest } from '../utils/api/methods';
 
-export default ({ isCompleted }) => {
+export const useTaskRequestHook = ({ isCompleted }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();

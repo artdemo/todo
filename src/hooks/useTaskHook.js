@@ -8,7 +8,7 @@ import {
   iconSelector,
 } from '../store/tasks/selectors';
 
-export default (taskId, categoryId) => {
+export const useTaskHook = (taskId, categoryId) => {
   const dispatch = useDispatch();
   const isPending = useSelector(isModifyPendingSelector(taskId));
   const icon = useSelector(iconSelector(categoryId));
