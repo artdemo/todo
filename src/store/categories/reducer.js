@@ -21,7 +21,7 @@ const initialState = {
   defaultCategoryId: null,
 };
 
-const categoryReducer = (state = initialState, action) => {
+export const categoryReducer = (state = initialState, action) => {
   switch (action.type) {
     // ================= SET CATEGORIES =============== //
     case SET_CATEGORIES:
@@ -105,5 +105,3 @@ const categoryReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default categoryReducer;

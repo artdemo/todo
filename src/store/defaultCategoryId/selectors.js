@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const isDefaultCategorySelector = (id) =>
+export const isDefaultSelectCategoryor = (id) =>
   createSelector(
     ({ defaultCategoryIdReducer }) =>
       defaultCategoryIdReducer.defaultCategoryId,

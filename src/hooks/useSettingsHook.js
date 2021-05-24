@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import useCategoryRequestHook from './useCategoryRequestHook';
-import useDefaultCategoryIdRequestHook from './useDefaultCategoryIdRequestHook';
+import { useCategoryRequestHook } from './useCategoryRequestHook';
+import { useDefaultCategoryIdRequestHook } from './useDefaultCategoryIdRequestHook';
 import {
   iconListSelector,
   isCreatePendingSelector,
@@ -9,7 +9,7 @@ import {
 } from '../store/categories/selectors';
 import { createCategory as createCategoryAction } from '../store/categories/actions';
 
-export default () => {
+export const useSettingsHook = () => {
   const dispatch = useDispatch();
 
   const { isResolved: isCategoryResolved } = useCategoryRequestHook();

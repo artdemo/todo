@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
-import useSortPanelHook from '../../hooks/useSortPanelHook';
-import SubmitButton from '../Buttons/SubmitButton';
-import SortSwitchGroup from './SortSwitchGroup';
-import CategoryCheckboxGroup from './CategoryCheckboxGroup';
-import ColorCheckboxGroup from './ColorCheckboxGroup';
+import { useSortPanelHook } from '../../hooks/useSortPanelHook';
+import { ButtonSubmit } from '../ButtonSubmit';
+import { SortSwitchGroup } from './SortSwitchGroup';
+import { CategoryCheckboxGroup } from './CategoryCheckboxGroup';
+import { ColorCheckboxGroup } from './ColorCheckboxGroup';
 import { compareObjects, compareArrays } from '../../utils/helpers';
-import useStyles from './style';
+import { useStyles } from './SortPanel.styles';
 
-const SortPanel = () => {
+export const SortPanel = () => {
   const classes = useStyles();
 
   const {
@@ -116,11 +116,9 @@ const SortPanel = () => {
           />
         </Grid>
         <Grid item>
-          <SubmitButton disabled={isFilterMatched()}>Apply</SubmitButton>
+          <ButtonSubmit disabled={isFilterMatched()}>Apply</ButtonSubmit>
         </Grid>
       </Grid>
     </form>
   );
 };
-
-export default SortPanel;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isResolvedSelector } from '../store/defaultCategoryId/selectors';
 import { getDefaultCategoryId as getDefaultCategoryIdAction } from '../store/defaultCategoryId/actions';
 
-export default () => {
+export const useDefaultCategoryIdRequestHook = () => {
   const dispatch = useDispatch();
 
   const getDefaultCategoryId = useCallback(

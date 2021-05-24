@@ -11,7 +11,10 @@ const initialState = {
   pendingCategory: null,
 };
 
-const defaultCategoryIdReducer = (state = initialState, { type, id }) => {
+export const defaultCategoryIdReducer = (
+  state = initialState,
+  { type, id },
+) => {
   switch (type) {
     case SET_DEFAULT_CATEGORY_ID:
       return {
@@ -38,5 +41,3 @@ const defaultCategoryIdReducer = (state = initialState, { type, id }) => {
       return state;
   }
 };
-
-export default defaultCategoryIdReducer;
