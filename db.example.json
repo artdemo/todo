@@ -1,0 +1,708 @@
+{
+  "todos": [
+    {
+      "name": "1",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-10",
+      "id": 1
+    },
+    {
+      "name": "2",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-10",
+      "id": 2
+    },
+    {
+      "name": "3",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "yellow",
+      "date": "2021-05-10",
+      "id": 5
+    },
+    {
+      "name": "4",
+      "isCompleted": false,
+      "isFavorite": true,
+      "categoryId": 8,
+      "color": "orange",
+      "date": "2021-05-11",
+      "id": 6
+    },
+    {
+      "name": "5",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "green",
+      "date": "2021-05-11",
+      "id": 7
+    },
+    {
+      "name": "8",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "yellow",
+      "date": "2021-05-11",
+      "id": 8
+    },
+    {
+      "name": "10",
+      "isCompleted": false,
+      "isFavorite": true,
+      "categoryId": 9,
+      "color": "red",
+      "date": "2021-05-11",
+      "id": 10
+    },
+    {
+      "name": "13",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "green",
+      "date": "2021-05-12",
+      "id": 13
+    },
+    {
+      "name": "14",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "orange",
+      "date": "2021-05-12",
+      "id": 14
+    },
+    {
+      "name": "15",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-12",
+      "id": 15
+    },
+    {
+      "name": "16",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-12",
+      "id": 16
+    },
+    {
+      "name": "17",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "green",
+      "date": "2021-05-13",
+      "id": 17
+    },
+    {
+      "name": "18",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "green",
+      "date": "2021-05-13",
+      "id": 18
+    },
+    {
+      "name": "19",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "yellow",
+      "date": "2021-05-13",
+      "id": 19
+    },
+    {
+      "name": "21",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "green",
+      "date": "2021-05-13",
+      "id": 21
+    },
+    {
+      "name": "22",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "yellow",
+      "date": "2021-05-14",
+      "id": 22
+    },
+    {
+      "name": "23",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "orange",
+      "date": "2021-05-14",
+      "id": 23
+    },
+    {
+      "name": "24",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "red",
+      "date": "2021-05-14",
+      "id": 24
+    },
+    {
+      "name": "25",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "black",
+      "date": "2021-05-14",
+      "id": 25
+    },
+    {
+      "name": "26",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "purple",
+      "date": "2021-05-14",
+      "id": 26
+    },
+    {
+      "name": "27",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "green",
+      "date": "2021-05-15",
+      "id": 27
+    },
+    {
+      "name": "28",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "orange",
+      "date": "2021-05-15",
+      "id": 28
+    },
+    {
+      "name": "29",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-15",
+      "id": 29
+    },
+    {
+      "name": "30",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-15",
+      "id": 30
+    },
+    {
+      "name": "31",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "green",
+      "date": "2021-05-16",
+      "id": 31
+    },
+    {
+      "name": "32",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-16",
+      "id": 32
+    },
+    {
+      "name": "33",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-16",
+      "id": 33
+    },
+    {
+      "name": "34",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-16",
+      "id": 34
+    },
+    {
+      "name": "35",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-16",
+      "id": 35
+    },
+    {
+      "name": "36",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 36
+    },
+    {
+      "name": "37",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 37
+    },
+    {
+      "name": "1",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-10",
+      "id": 101
+    },
+    {
+      "name": "2",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-10",
+      "id": 102
+    },
+    {
+      "name": "5",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "yellow",
+      "date": "2021-05-10",
+      "id": 105
+    },
+    {
+      "name": "6",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "orange",
+      "date": "2021-05-11",
+      "id": 106
+    },
+    {
+      "name": "7",
+      "isCompleted": true,
+      "isFavorite": true,
+      "categoryId": 9,
+      "color": "green",
+      "date": "2021-05-11",
+      "id": 107
+    },
+    {
+      "name": "8",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "yellow",
+      "date": "2021-05-11",
+      "id": 108
+    },
+    {
+      "name": "9",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "orange",
+      "date": "2021-05-11",
+      "id": 109
+    },
+    {
+      "name": "10",
+      "isCompleted": true,
+      "isFavorite": true,
+      "categoryId": 9,
+      "color": "red",
+      "date": "2021-05-11",
+      "id": 1010
+    },
+    {
+      "name": "11",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "black",
+      "date": "2021-05-12",
+      "id": 1011
+    },
+    {
+      "name": "13",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "green",
+      "date": "2021-05-12",
+      "id": 1013
+    },
+    {
+      "name": "14",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "orange",
+      "date": "2021-05-12",
+      "id": 1014
+    },
+    {
+      "name": "15",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-12",
+      "id": 1015
+    },
+    {
+      "name": "16",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-12",
+      "id": 1016
+    },
+    {
+      "name": "17",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "green",
+      "date": "2021-05-13",
+      "id": 1017
+    },
+    {
+      "name": "18",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "green",
+      "date": "2021-05-13",
+      "id": 1018
+    },
+    {
+      "name": "19",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "yellow",
+      "date": "2021-05-13",
+      "id": 1019
+    },
+    {
+      "name": "20",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "orange",
+      "date": "2021-05-13",
+      "id": 1020
+    },
+    {
+      "name": "21",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "green",
+      "date": "2021-05-13",
+      "id": 1021
+    },
+    {
+      "name": "22",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "yellow",
+      "date": "2021-05-14",
+      "id": 1022
+    },
+    {
+      "name": "23",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "orange",
+      "date": "2021-05-14",
+      "id": 1023
+    },
+    {
+      "name": "24",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "red",
+      "date": "2021-05-14",
+      "id": 1024
+    },
+    {
+      "name": "25",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "black",
+      "date": "2021-05-14",
+      "id": 1025
+    },
+    {
+      "name": "26",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 9,
+      "color": "purple",
+      "date": "2021-05-14",
+      "id": 1026
+    },
+    {
+      "name": "27",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "green",
+      "date": "2021-05-15",
+      "id": 1027
+    },
+    {
+      "name": "28",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 10,
+      "color": "orange",
+      "date": "2021-05-15",
+      "id": 1028
+    },
+    {
+      "name": "29",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-15",
+      "id": 1029
+    },
+    {
+      "name": "30",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-15",
+      "id": 1030
+    },
+    {
+      "name": "31",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "green",
+      "date": "2021-05-16",
+      "id": 1031
+    },
+    {
+      "name": "32",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-16",
+      "id": 1032
+    },
+    {
+      "name": "33",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-16",
+      "id": 1033
+    },
+    {
+      "name": "34",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-16",
+      "id": 1034
+    },
+    {
+      "name": "35",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-16",
+      "id": 1035
+    },
+    {
+      "name": "36",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 1036
+    },
+    {
+      "name": "37",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 1037
+    },
+    {
+      "name": "38",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 1038
+    },
+    {
+      "name": "39",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 1039
+    },
+    {
+      "name": "40",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 1040
+    },
+    {
+      "name": "41",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "orange",
+      "date": "2021-05-17",
+      "id": 1041
+    },
+    {
+      "name": "42",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 1042
+    },
+    {
+      "name": "43",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-17",
+      "id": 1043
+    },
+    {
+      "name": "51",
+      "isCompleted": true,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "yellow",
+      "date": "2021-05-17",
+      "id": 1045
+    },
+    {
+      "name": "sfsdfsdfsdfsdf",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-18",
+      "id": 1046
+    },
+    {
+      "name": "фвфывфывфывфывфывфыв",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 7,
+      "color": "red",
+      "date": "2021-05-18T14:20:23.866Z",
+      "id": 1047
+    },
+    {
+      "name": "4",
+      "isCompleted": false,
+      "isFavorite": false,
+      "categoryId": 8,
+      "color": "green",
+      "date": "2021-05-23",
+      "id": 1048
+    }
+  ],
+  "categories": [
+    {
+      "name": "High priority",
+      "icon": "exclamation",
+      "colors": ["red", "orange", "green"],
+      "id": 7
+    },
+    {
+      "name": "Education",
+      "icon": "education",
+      "colors": ["green", "yellow", "orange"],
+      "id": 8
+    },
+    {
+      "name": "Work",
+      "icon": "work",
+      "colors": ["green", "yellow", "orange", "red", "black", "purple"],
+      "id": 9
+    },
+    {
+      "name": "Home",
+      "icon": "home",
+      "colors": ["green", "orange"],
+      "id": 10
+    }
+  ],
+  "default_category": {
+    "id": 7
+  }
+}
