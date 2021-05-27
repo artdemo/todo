@@ -20,8 +20,6 @@ export const getCategories = () => (dispatch, getState) => {
   // If data was already requested from the server take it from the store
   if (categoryReducer.requestStatus.isResolved) return;
 
-  console.log('Get Categories');
-
   getCategoriesRequest()
     .then(({ data }) => {
       data.sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
