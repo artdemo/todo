@@ -5,9 +5,9 @@ import { Grid, TextField } from '@material-ui/core';
 import { FrameBox } from '../components/FrameBox';
 import { ButtonSubmit } from '../components/ButtonSubmit';
 import { SelectCategory } from '../components/SelectCategory';
-import { Task } from '../components/Task';
 import { LoaderMain } from '../components/LoaderMain';
 import { LoaderPage } from '../components/LoaderPage';
+import { TaskList } from '../components/TaskList';
 import { useMainHook } from '../hooks/useMainHook';
 import { useTaskRequestHook } from '../hooks/useTaskRequestHook';
 import { useCategoryRequestHook } from '../hooks/useCategoryRequestHook';
@@ -49,26 +49,6 @@ export const Main = () => {
       />
     ),
     [categoryListFlatted, selectedCategoryIndex],
-  );
-
-  // ========================== TASK_LIST ========================== //
-  const tasksToRender = useMemo(
-    () =>
-      taskList.map(
-        ({ id, name, isCompleted, isFavorite, categoryId, color, date }) => (
-          <Task
-            key={id}
-            id={id}
-            name={name}
-            isCompleted={isCompleted}
-            isFavorite={isFavorite}
-            categoryId={categoryId}
-            color={color}
-            date={date}
-          />
-        ),
-      ),
-    [taskList],
   );
 
   // ======================== LOADER ========================== //
@@ -126,7 +106,7 @@ export const Main = () => {
         style={{ overflow: 'visible' }}
         loader={<LoaderPage />}
       >
-        {tasksToRender}
+        <TaskList taskList={taskList} />
       </InfiniteScroll>
     </FrameBox>
   );
