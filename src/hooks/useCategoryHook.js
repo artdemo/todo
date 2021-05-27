@@ -5,7 +5,7 @@ import { setDefaultCategoryId as setDefaultCategoryIdAction } from '../store/def
 
 import { isDeletePendingSelector } from '../store/categories/selectors';
 import {
-  isDefaultSelectCategoryor,
+  isDefaultCategorySelector,
   isSetDefaultPendingSelector,
 } from '../store/defaultCategoryId/selectors';
 
@@ -13,7 +13,7 @@ export const useCategoryHook = (id) => {
   const dispatch = useDispatch();
   const isDeletePending = useSelector(isDeletePendingSelector(id));
   const isSetDefaultPending = useSelector(isSetDefaultPendingSelector(id));
-  const isDefault = useSelector(isDefaultSelectCategoryor(id));
+  const isDefault = useSelector(isDefaultCategorySelector(id));
 
   const removeCategory = (category) => dispatch(removeCategoryAction(category));
   const setDefaultCategoryId = (id) => dispatch(setDefaultCategoryIdAction(id));

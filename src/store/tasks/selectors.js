@@ -7,14 +7,14 @@ export const taskListSelector = ({ taskReducer }) => taskReducer.taskList;
 
 export const totalCountSelector = ({ taskReducer }) => taskReducer.totalCount;
 
-export const isResolvedSelector = ({ taskReducer }) =>
-  taskReducer.requestStatus.isResolved;
+export const resolvedStatusSelector = ({ taskReducer }) =>
+  taskReducer.requestStatus.resolvedStatus;
 
-export const isCreatePendingSelector = ({ taskReducer }) =>
-  taskReducer.requestStatus.isCreatePending;
+export const createPendingStatusSelector = ({ taskReducer }) =>
+  taskReducer.requestStatus.createPendingStatus;
 
-export const isCreateFailedSelector = ({ taskReducer }) =>
-  taskReducer.requestStatus.isCreateFailed;
+export const createFailedStatusSelector = ({ taskReducer }) =>
+  taskReducer.requestStatus.createFailedStatus;
 
 export const queryParamsSelector = ({ taskReducer }) => taskReducer.queryParams;
 

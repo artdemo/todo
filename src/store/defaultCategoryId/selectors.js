@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const isDefaultSelectCategoryor = (id) =>
+export const isDefaultCategorySelector = (id) =>
   createSelector(
     ({ defaultCategoryIdReducer }) =>
       defaultCategoryIdReducer.defaultCategoryId,
@@ -14,5 +14,5 @@ export const isSetDefaultPendingSelector = (id) => ({
   defaultCategoryIdReducer,
 }) => id === defaultCategoryIdReducer.pendingCategory;
 
-export const isResolvedSelector = ({ defaultCategoryIdReducer }) =>
-  defaultCategoryIdReducer.isResolved;
+export const resolvedStatusSelector = ({ defaultCategoryIdReducer }) =>
+  defaultCategoryIdReducer.resolvedStatus;

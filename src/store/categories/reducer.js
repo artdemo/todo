@@ -12,9 +12,9 @@ import {
 const initialState = {
   categoryList: [],
   requestStatus: {
-    isResolved: null,
-    isCreatePending: false,
-    isCreateFailed: null,
+    resolvedStatus: null,
+    createPendingStatus: false,
+    createFailedStatus: null,
     // Array to store id of categories while they are updated or deleted, so to show preloader in the component
     pendingCategories: [],
   },
@@ -30,7 +30,7 @@ export const categoryReducer = (state = initialState, action) => {
         categoryList: action.data,
         requestStatus: {
           ...state.requestStatus,
-          isResolved: true,
+          resolvedStatus: true,
         },
       };
     case SET_CATEGORIES_GET_ERROR:
@@ -38,7 +38,7 @@ export const categoryReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isResolved: false,
+          resolvedStatus: false,
         },
       };
     // ================= ADD CATEGORY =============== //
@@ -48,8 +48,8 @@ export const categoryReducer = (state = initialState, action) => {
         categoryList: [...state.categoryList, action.data],
         requestStatus: {
           ...state.requestStatus,
-          isCreatePending: false,
-          isCreateFailed: false,
+          createPendingStatus: false,
+          createFailedStatus: false,
         },
       };
     case SET_CATEGORY_CREATE_REQUEST:
@@ -57,8 +57,8 @@ export const categoryReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isCreatePending: true,
-          isCreateFailed: null,
+          createPendingStatus: true,
+          createFailedStatus: null,
         },
       };
     case SET_CATEGORY_CREATE_ERROR:
@@ -66,8 +66,8 @@ export const categoryReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isCreatePending: false,
-          isCreateFailed: true,
+          createPendingStatus: false,
+          createFailedStatus: true,
         },
       };
     // ================= DELETE CATEGORY =============== //

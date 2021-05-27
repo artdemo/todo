@@ -13,9 +13,9 @@ export const Settings = () => {
     colors,
     categoryList,
     availableIcons,
-    isCreatePending,
-    isCreateFailed,
-    isResolved,
+    createPendingStatus,
+    createFailedStatus,
+    resolvedStatus,
     createCategory,
   } = useSettingsHook();
 
@@ -25,10 +25,10 @@ export const Settings = () => {
 
   useEffect(() => {
     // If a request ended up with error leave the form filled
-    if (isCreateFailed === null || isCreateFailed === true) return;
+    if (createFailedStatus === null || createFailedStatus === true) return;
     // Reset the form after submitting new task
     setTextControlValue('');
-  }, [isCreateFailed]);
+  }, [createFailedStatus]);
 
   // ==================== CATEGORY LIST ===================== //
   const categoryToRender = useMemo(
@@ -73,13 +73,13 @@ export const Settings = () => {
   );
 
   // ==================== MAIN LOADER ==================== //
-  if (!isResolved) return <LoaderMain />;
+  if (!resolvedStatus) return <LoaderMain />;
 
   // =================== SETTINGS PAGE =================== //
   const handleCreateCategory = (e) => {
     e.preventDefault();
 
-    if (isCreatePending) return;
+    if (createPendingStatus) return;
 
     const insertedText = textControlValue.trim();
 
@@ -125,7 +125,7 @@ export const Settings = () => {
           </Grid>
           <Grid item sm={2} xs={4}>
             <ButtonSubmit
-              isLoading={isCreatePending}
+              isLoading={createPendingStatus}
               disabled={!availableIcons.length}
             >
               Add
