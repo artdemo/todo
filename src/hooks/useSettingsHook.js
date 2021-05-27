@@ -3,8 +3,8 @@ import { useCategoryRequestHook } from './useCategoryRequestHook';
 import { useDefaultCategoryIdRequestHook } from './useDefaultCategoryIdRequestHook';
 import {
   iconListSelector,
-  isCreatePendingSelector,
-  isCreateFailedSelector,
+  createPendingStatusSelector,
+  createFailedStatusSelector,
   categoryListSelector,
 } from '../store/categories/selectors';
 import { createCategory as createCategoryAction } from '../store/categories/actions';
@@ -12,15 +12,15 @@ import { createCategory as createCategoryAction } from '../store/categories/acti
 export const useSettingsHook = () => {
   const dispatch = useDispatch();
 
-  const { isResolved: isCategoryResolved } = useCategoryRequestHook();
+  const { resolvedStatus: isCategoryResolved } = useCategoryRequestHook();
 
   const {
-    isResolved: isDefaultCategoryIdResolved,
+    resolvedStatus: isDefaultCategoryIdResolved,
   } = useDefaultCategoryIdRequestHook();
 
   const categoryList = useSelector(categoryListSelector);
-  const isCreatePending = useSelector(isCreatePendingSelector);
-  const isCreateFailed = useSelector(isCreateFailedSelector);
+  const createPendingStatus = useSelector(createPendingStatusSelector);
+  const createFailedStatus = useSelector(createFailedStatusSelector);
   const { availableIcons, colors } = useSelector(iconListSelector);
 
   const createCategory = (category) => dispatch(createCategoryAction(category));
@@ -29,9 +29,9 @@ export const useSettingsHook = () => {
     categoryList,
     availableIcons,
     colors,
-    isCreatePending,
-    isCreateFailed,
-    isResolved: isCategoryResolved && isDefaultCategoryIdResolved,
+    createPendingStatus,
+    createFailedStatus,
+    resolvedStatus: isCategoryResolved && isDefaultCategoryIdResolved,
     createCategory,
   };
 };

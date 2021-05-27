@@ -18,26 +18,26 @@ export const Main = () => {
 
   const {
     createTask,
-    isCreatePending,
-    isCreateFailed,
+    createPendingStatus,
+    createFailedStatus,
     categoryListFlatted,
   } = useMainHook();
 
-  const isCategoriesResolved = useCategoryRequestHook();
+  const categoriesResolvedStatus = useCategoryRequestHook();
 
   const {
     taskList,
-    isTasksResolved,
+    tasksResolvedStatus,
     totalCount,
     addPage,
   } = useTaskRequestHook({ isCompleted: false });
 
   useEffect(() => {
     // If a request end up with error leave the form filled
-    if (isCreateFailed === null || isCreateFailed === true) return;
+    if (createFailedStatus === null || createFailedStatus === true) return;
     // Reset the form after submitting new task
     setTextControlValue('');
-  }, [isCreateFailed]);
+  }, [createFailedStatus]);
 
   // ======================= CATEGORY_SELECT ===================== //
   const selectCategory = useMemo(
@@ -52,14 +52,14 @@ export const Main = () => {
   );
 
   // ======================== LOADER ========================== //
-  if (isTasksResolved === null || isCategoriesResolved === null)
+  if (tasksResolvedStatus === null || categoriesResolvedStatus === null)
     return <LoaderMain />;
 
   // ======================= MAIN PAGE ======================== //
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (textControlValue.trim() === '' || isCreatePending) return;
+    if (textControlValue.trim() === '' || createPendingStatus) return;
 
     const { id: categoryId, color } = categoryListFlatted[
       selectedCategoryIndex
@@ -95,7 +95,7 @@ export const Main = () => {
             {selectCategory}
           </Grid>
           <Grid item sm={3} xs={6}>
-            <ButtonSubmit isLoading={isCreatePending}>Add</ButtonSubmit>
+            <ButtonSubmit isLoading={createPendingStatus}>Add</ButtonSubmit>
           </Grid>
         </Grid>
       </form>

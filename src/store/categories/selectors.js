@@ -11,14 +11,14 @@ export const categoryListSelector = createSelector(
     }),
 );
 
-export const isResolvedSelector = ({ categoryReducer }) =>
-  categoryReducer.requestStatus.isResolved;
+export const resolvedStatusSelector = ({ categoryReducer }) =>
+  categoryReducer.requestStatus.resolvedStatus;
 
-export const isCreatePendingSelector = ({ categoryReducer }) =>
-  categoryReducer.requestStatus.isCreatePending;
+export const createPendingStatusSelector = ({ categoryReducer }) =>
+  categoryReducer.requestStatus.createPendingStatus;
 
-export const isCreateFailedSelector = ({ categoryReducer }) =>
-  categoryReducer.requestStatus.isCreateFailed;
+export const createFailedStatusSelector = ({ categoryReducer }) =>
+  categoryReducer.requestStatus.createFailedStatus;
 
 export const isDeletePendingSelector = (id) => ({ categoryReducer }) =>
   categoryReducer.requestStatus.pendingCategories.includes(id);

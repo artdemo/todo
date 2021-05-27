@@ -10,7 +10,7 @@ import { useCategoryRequestHook } from '../hooks/useCategoryRequestHook';
 export const Completed = () => {
   const {
     taskList,
-    isTasksResolved,
+    tasksResolvedStatus,
     totalCount,
     addPage,
   } = useTaskRequestHook({ isCompleted: true });
@@ -38,7 +38,7 @@ export const Completed = () => {
   );
 
   // ======================== LOADER ========================== //
-  if (isTasksResolved === null || isCategoriesResolved === null)
+  if (tasksResolvedStatus === null || isCategoriesResolved === null)
     return <LoaderMain />;
 
   // ===================== COMPLETED PAGE ===================== //

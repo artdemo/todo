@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   defaultCategoryId: 7,
-  isResolved: false,
+  resolvedStatus: false,
   pendingCategory: null,
 };
 
@@ -20,12 +20,12 @@ export const defaultCategoryIdReducer = (
       return {
         ...state,
         defaultCategoryId: id,
-        isResolved: true,
+        resolvedStatus: true,
       };
     case SET_DEFAULT_CATEGORY_ID_ERROR:
       return {
         ...state,
-        isResolved: false,
+        resolvedStatus: false,
       };
     case SET_DEFAULT_CATEGORY_ID_PENDING_STATUS:
       return {

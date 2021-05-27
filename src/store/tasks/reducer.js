@@ -25,9 +25,9 @@ const initialState = {
     isCompleted: false,
   },
   requestStatus: {
-    isCreatePending: false,
-    isCreateFailed: null,
-    isResolved: null,
+    createPendingStatus: false,
+    createFailedStatus: null,
+    resolvedStatus: null,
     // Array to store id of tasks while they are updated or deleted, so to show preloader in the component
     pendingTasks: [],
   },
@@ -50,7 +50,7 @@ export const taskReducer = (state = initialState, action) => {
         totalCount: +action.totalCount,
         requestStatus: {
           ...state.requestStatus,
-          isResolved: true,
+          resolvedStatus: true,
         },
       };
     }
@@ -72,7 +72,7 @@ export const taskReducer = (state = initialState, action) => {
         ...state,
         taskList: [],
         queryParams: newQueryParams,
-        requestStatus: { ...state.requestStatus, isResolved: null },
+        requestStatus: { ...state.requestStatus, resolvedStatus: null },
       };
     }
     case SET_TASKS_GET_ERROR:
@@ -80,7 +80,7 @@ export const taskReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isResolved: false,
+          resolvedStatus: false,
         },
       };
     // ================ CREATE TASK ================= //
@@ -90,8 +90,8 @@ export const taskReducer = (state = initialState, action) => {
         taskList: [action.data, ...state.taskList],
         requestStatus: {
           ...state.requestStatus,
-          isCreatePending: false,
-          isCreateFailed: false,
+          createPendingStatus: false,
+          createFailedStatus: false,
         },
       };
     }
@@ -100,8 +100,8 @@ export const taskReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isCreatePending: true,
-          isCreateFailed: null,
+          createPendingStatus: true,
+          createFailedStatus: null,
         },
       };
     case SET_TASKS_CREATE_ERROR:
@@ -109,8 +109,8 @@ export const taskReducer = (state = initialState, action) => {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          isCreatePending: false,
-          isCreateFailed: true,
+          createPendingStatus: false,
+          createFailedStatus: true,
         },
       };
     // ================= UPDATE TASK ================ //

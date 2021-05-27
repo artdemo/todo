@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   taskListSelector,
-  isResolvedSelector,
+  resolvedStatusSelector,
   queryParamsSelector,
   totalCountSelector,
 } from '../store/tasks/selectors';
@@ -22,7 +22,7 @@ export const useTaskRequestHook = ({ isCompleted }) => {
 
   const taskList = useSelector(taskListSelector);
   const queryParams = useSelector(queryParamsSelector);
-  const isTasksResolved = useSelector(isResolvedSelector);
+  const tasksResolvedStatus = useSelector(resolvedStatusSelector);
   const totalCount = useSelector(totalCountSelector);
 
   const addPage = () => dispatch(addPageAction);
@@ -52,7 +52,7 @@ export const useTaskRequestHook = ({ isCompleted }) => {
 
   return {
     taskList,
-    isTasksResolved,
+    tasksResolvedStatus,
     totalCount,
     addPage,
   };
