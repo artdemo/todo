@@ -22,8 +22,6 @@ export const getTasks = () => (dispatch, getState) => {
   const { taskReducer } = getState();
   const { queryParams } = taskReducer;
 
-  console.log('Get Task');
-
   getTasksRequest(queryParams)
     .then((response) => {
       if (!response) return;
@@ -37,8 +35,7 @@ export const getTasks = () => (dispatch, getState) => {
         totalCount,
       });
     })
-    .catch((e) => {
-      console.log(e);
+    .catch(() => {
       dispatch({
         type: SET_TASKS_GET_ERROR,
       });

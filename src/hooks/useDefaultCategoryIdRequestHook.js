@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isResolvedSelector } from '../store/defaultCategoryId/selectors';
+import { resolvedStatusSelector } from '../store/defaultCategoryId/selectors';
 import { getDefaultCategoryId as getDefaultCategoryIdAction } from '../store/defaultCategoryId/actions';
 
 export const useDefaultCategoryIdRequestHook = () => {
@@ -15,7 +15,7 @@ export const useDefaultCategoryIdRequestHook = () => {
     getDefaultCategoryId();
   }, [getDefaultCategoryId]);
 
-  const isResolved = useSelector(isResolvedSelector);
+  const resolvedStatus = useSelector(resolvedStatusSelector);
 
-  return { isResolved };
+  return { resolvedStatus };
 };

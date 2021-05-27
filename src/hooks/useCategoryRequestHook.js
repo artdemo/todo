@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isResolvedSelector } from '../store/categories/selectors';
+import { resolvedStatusSelector } from '../store/categories/selectors';
 import { getCategories as getCategoriesAction } from '../store/categories/actions';
 
 export const useCategoryRequestHook = () => {
@@ -14,7 +14,7 @@ export const useCategoryRequestHook = () => {
     getCategories();
   }, [getCategories]);
 
-  const isResolved = useSelector(isResolvedSelector);
+  const resolvedStatus = useSelector(resolvedStatusSelector);
 
-  return { isResolved };
+  return { resolvedStatus };
 };
